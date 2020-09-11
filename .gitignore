@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.suo
+/RestaurantPoll.Core.Domain/RestaurantPoll.Core.Domain/bin/Debug/netcoreapp3.1
+/RestaurantPoll.Core.Domain/RestaurantPoll.Core.Domain/obj
+/RestaurantPoll.Core.Domain/RestaurantPoll.Core.Domain.Tests/bin/Debug/netcoreapp3.1
+/RestaurantPoll.Core.Domain/RestaurantPoll.Core.Domain.Tests/obj
