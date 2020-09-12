@@ -10,21 +10,21 @@ namespace RestaurantPoll.Core.Domain.Entities.RestaurantPollAggregate
         /// <summary>
         /// Votação que recebeu o voto.
         /// </summary>
-        public RestaurantPoll RestaurantPollId { get; protected set; }
+        public RestaurantPoll RestaurantPoll { get; private set; }
 
         /// <summary>
         /// Usuário que votou.
         /// </summary>
-        public User VoterId { get; protected set; }
+        public User Voter { get; private set; }
 
         /// <summary>
         /// Restaurante que foi votado.
         /// </summary>
-        public Restaurant Restaurant { get; protected set; }
+        public Restaurant Restaurant { get; private set; }
 
         /// <summary>
         /// Data que foi feito o voto.
         /// </summary>
-        public DateTime VoteDate { get; protected set; }
+        public DateTime Date { get; private set; }
     }
 }

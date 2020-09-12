@@ -1,10 +1,11 @@
-﻿using System;
+﻿using RestaurantPoll.Core.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RestaurantPoll.Core.Domain.Entities.RestaurantPollAggregate
 {
-    public class RestaurantPoll : Entity
+    public class RestaurantPoll : Entity, IAggregateRoot
     {
         public string Name { get; private set; }
 
