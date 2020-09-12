@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,18 +13,20 @@ namespace PartiuAlmoco.Core.Domain.Entities
         public string Name { get; set; }
 
         /// <summary>
-        /// Custo médio de um almoço.
-        /// </summary>
-        public decimal AvgLunchCost { get; set; }
-
-        /// <summary>
         /// Site do restaurante.
         /// </summary>
-        public string WebSite { get; set; }
+        public string Website { get; set; }
 
         /// <summary>
         /// Telefone do restaurante.
         /// </summary>
         public string Phone { get; set; }
+
+        public Restaurant(string name, string website, string phone)
+        {
+            Name = name;
+            Website = website;
+            Phone = phone;
+        }
     }
 }

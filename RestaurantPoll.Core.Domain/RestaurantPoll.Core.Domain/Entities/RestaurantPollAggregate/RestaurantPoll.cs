@@ -1,6 +1,9 @@
-﻿using PartiuAlmoco.Core.Domain.Interfaces;
+﻿using Ardalis.GuardClauses;
+using PartiuAlmoco.Core.Domain.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
@@ -37,6 +40,23 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         public void AddVote(Restaurant restaurant, User user)
         {
             // TODO: regras de negocio
+        }
+
+        public RestaurantPoll(Guid id, 
+            string name,
+            DateTime date,
+            IEnumerable<Restaurant> restaurants,
+            IEnumerable<RestaurantPollResult> pollResultsFromLast30Days,
+            IEnumerable<RestaurantPollVote> votes,
+            Restaurant winnerRestaurant)
+        {
+            Id = id;
+            Name = name;
+            Date = date;
+            AllRestaurants = restaurants.ToList().AsReadOnly();
+            PollResultsFromLast30Days = pollResultsFromLast30Days.ToList().AsReadOnly();
+            Votes = votes.ToList().AsReadOnly();
+            WinnerRestaurant = winnerRestaurant;
         }
     }
 }

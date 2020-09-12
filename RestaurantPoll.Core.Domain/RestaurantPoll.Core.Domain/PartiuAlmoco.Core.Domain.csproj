@@ -10,4 +10,8 @@
     <None Remove="Services\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="3.0.0" />
+  </ItemGroup>
+
 </Project>
