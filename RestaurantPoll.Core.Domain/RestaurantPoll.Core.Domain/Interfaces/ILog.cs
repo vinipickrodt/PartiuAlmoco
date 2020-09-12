@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantPoll.Core.Domain.Interfaces
+namespace PartiuAlmoco.Core.Domain.Interfaces
 {
     /// <summary>
     /// Utilitário de para logar erros, avisos e informações.

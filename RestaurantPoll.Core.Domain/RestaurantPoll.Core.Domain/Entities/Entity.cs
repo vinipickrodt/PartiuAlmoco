@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RestaurantPoll.Core.Domain.Entities
+namespace PartiuAlmoco.Core.Domain.Entities
 {
     public abstract class Entity
     {

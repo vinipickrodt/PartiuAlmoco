@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace RestaurantPoll.Core.Domain.Tests
+namespace PartiuAlmoco.Core.Domain.Tests
 {
     public class UnitTest1
     {

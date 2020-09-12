@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RestaurantPoll.Core.Domain.Entities.RestaurantPollAggregate
+namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 {
     /// <summary>
     /// Voto em um restaurante feito por um usuário.

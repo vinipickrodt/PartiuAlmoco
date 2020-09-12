@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>PartiuAlmoco.Core.Domain.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

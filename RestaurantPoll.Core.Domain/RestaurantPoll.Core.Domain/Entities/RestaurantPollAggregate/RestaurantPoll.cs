@@ -1,9 +1,9 @@
-﻿using RestaurantPoll.Core.Domain.Interfaces;
+﻿using PartiuAlmoco.Core.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RestaurantPoll.Core.Domain.Entities.RestaurantPollAggregate
+namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 {
     public class RestaurantPoll : Entity, IAggregateRoot
     {
