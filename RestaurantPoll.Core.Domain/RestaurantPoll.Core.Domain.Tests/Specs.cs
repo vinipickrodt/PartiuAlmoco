@@ -13,7 +13,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
         [Fact]
         public void Specification_Somente_Um_Voto_Por_Dia()
         {
-            List<Mock<User>> mockedUsers = GetMockedUsers();
+            List<Mock<Entities.User>> mockedUsers = GetMockedUsers();
             List<Mock<Restaurant>> mockedRestaurants = GetMockedRestaurants();
         }
 
@@ -35,37 +35,37 @@ namespace PartiuAlmoco.Core.Domain.Tests
             };
         }
 
-        private List<Mock<User>> GetMockedUsers()
+        private List<Mock<Entities.User>> GetMockedUsers()
         {
-            var userJohn = new Mock<User>(new object[] {
+            var userJohn = new Mock<Entities.User>(new object[] {
                 new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                 "John Juarez Jones",
                 "3j",
                 "john@gmail.com"
             });
 
-            var userMary = new Mock<User>(new object[] {
+            var userMary = new Mock<Entities.User>(new object[] {
                 new Guid("{E8870CB0-B90D-4334-AD7B-13C579A5BBA6}"),
                 "Mary Ann Smith",
                 "mary",
                 "mary@gmail.com"
             });
 
-            var userBill = new Mock<User>(new object[] {
+            var userBill = new Mock<Entities.User>(new object[] {
                 new Guid("{BBCF1FB7-6536-4639-B7CE-0CE62FED8419}"),
                 "Bill Highsmith",
                 "billy",
                 "billy@gmail.com"
             });
 
-            var userCaroline = new Mock<User>(new object[] {
+            var userCaroline = new Mock<Entities.User>(new object[] {
                 new Guid("{8C709D68-8EAB-4A95-8ACA-8FCA330F018B}"),
                 "Caroline Gracie Wurst",
                 "carol",
                 "carol@hotmail.com"
             });
 
-            return new List<Mock<User>>() { userJohn, userMary, userBill, userCaroline };
+            return new List<Mock<Entities.User>>() { userJohn, userMary, userBill, userCaroline };
         }
     }
 }

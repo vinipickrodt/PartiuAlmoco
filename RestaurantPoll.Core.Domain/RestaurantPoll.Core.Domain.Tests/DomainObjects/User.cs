@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace PartiuAlmoco.Core.Domain.Tests
+namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
 {
-    public class DomainObject_User
+    public class User
     {
         [Fact]
         public void Users_Must_Have_Valid_Email()
         {
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     ""
@@ -23,7 +23,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     null
@@ -32,7 +32,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "john"
@@ -41,7 +41,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "@"
@@ -50,7 +50,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "@gmail"
@@ -59,7 +59,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "@gmail."
@@ -68,7 +68,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "john@gmail"
@@ -77,7 +77,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "john@gmail"
@@ -86,14 +86,14 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
             {
-                new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+                new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                     "John Juarez Jones",
                     "3j",
                     "john@gmail."
                 );
             }));
 
-            new User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
+            new Entities.User(new Guid("{BE90FABC-C5DE-4778-A37A-A2EC7BBB41BF}"),
                 "John Juarez Jones",
                 "3j",
                 "john@gmail.com"

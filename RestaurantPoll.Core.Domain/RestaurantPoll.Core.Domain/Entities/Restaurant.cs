@@ -24,6 +24,13 @@ namespace PartiuAlmoco.Core.Domain.Entities
 
         public Restaurant(string name, string website, string phone)
         {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+
+            if (string.IsNullOrWhiteSpace(website) && string.IsNullOrWhiteSpace(phone))
+            {
+                throw new ArgumentException("A restaurant must have at least a website or a phone.");
+            }
+
             Name = name;
             Website = website;
             Phone = phone;
