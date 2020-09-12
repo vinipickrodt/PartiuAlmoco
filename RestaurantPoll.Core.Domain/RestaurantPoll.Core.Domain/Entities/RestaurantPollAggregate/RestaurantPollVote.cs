@@ -1,11 +1,12 @@
-﻿using System;
+﻿using PartiuAlmoco.Core.Domain.Interfaces;
+using System;
 
 namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 {
     /// <summary>
     /// Voto em um restaurante feito por um usuário.
     /// </summary>
-    public class RestaurantPollVote : Entity
+    public class RestaurantPollVote : Entity, IRestaurantPollVote
     {
         /// <summary>
         /// Votação que recebeu o voto.
