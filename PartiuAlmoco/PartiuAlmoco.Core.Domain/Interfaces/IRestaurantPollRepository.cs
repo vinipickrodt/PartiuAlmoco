@@ -17,6 +17,14 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
         RestaurantPoll GetPollByDate(DateTime date);
 
         /// <summary>
+        /// Cria uma nova votação.
+        /// </summary>
+        /// <param name="name">Nome da votação</param>
+        /// <param name="date">Data da votação</param>
+        /// <returns>Retorna a votação</returns>
+        RestaurantPoll NewPoll(string name, DateTime date);
+
+        /// <summary>
         /// Confirma as operações realizadas como sendo válidas e podem ser gravadas.
         /// </summary>
         /// <param name="poll">Votação</param>

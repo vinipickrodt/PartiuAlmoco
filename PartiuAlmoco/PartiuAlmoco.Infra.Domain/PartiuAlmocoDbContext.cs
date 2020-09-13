@@ -12,15 +12,28 @@ namespace PartiuAlmoco.Infra.Domain
         public DbSet<RestaurantPollVote> Votes { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<User> Users { get; set; }
+        public IAppSettings Settings { get; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Desativando o tracking automatico do EF para as propriedades do AggregateRoot.
+            modelBuilder.Entity<RestaurantPoll>().Ignore(rp => rp.AllRestaurants);
+            modelBuilder.Entity<RestaurantPoll>().Ignore(rp => rp.PollResults);
+            modelBuilder.Entity<RestaurantPoll>().Ignore(rp => rp.Votes);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var dir = Directory.GetCurrentDirectory();
-            var dbPath = Path.Combine(dir, "data.sqlite");
-            
-            optionsBuilder.UseSqlite(@$"Data Source={dbPath}");
+            optionsBuilder.UseSqlite(Settings.DatabaseConnectionString);
 
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public PartiuAlmocoDbContext(IAppSettings settings)
+        {
+            Settings = settings;
         }
     }
 }

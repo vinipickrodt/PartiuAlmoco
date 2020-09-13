@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RestaurantPoll.Core.Domain\PartiuAlmoco.Core.Domain.csproj" />
+    <ProjectReference Include="..\PartiuAlmoco.Core.Domain\PartiuAlmoco.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>
