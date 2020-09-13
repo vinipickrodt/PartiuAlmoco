@@ -49,7 +49,7 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 
             if (_votes.Any(vote => vote.Voter.Id == user.Id))
             {
-                throw new ApplicationException($"User ${user.FullName} already voted in this poll.");
+                throw new ApplicationException($"User {user.FullName} already voted in this poll.");
             }
 
             _votes.Add(new RestaurantPollVote(this, user, restaurant, Date));
