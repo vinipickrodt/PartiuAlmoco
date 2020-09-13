@@ -51,5 +51,10 @@ namespace PartiuAlmoco.Core.Domain.Utils
                 return false;
             }
         }
+
+        public static int WeekOfYear(this DateTime dateTime)
+        {
+            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+        }
     }
 }

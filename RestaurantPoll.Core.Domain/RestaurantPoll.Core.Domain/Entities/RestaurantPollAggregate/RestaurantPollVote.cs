@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
+using System;
 
 namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 {
@@ -26,5 +27,21 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         /// Data que foi feito o voto.
         /// </summary>
         public virtual DateTime Date { get; private set; }
+
+        public RestaurantPollVote(RestaurantPoll restaurantPoll, User voter, Restaurant restaurant, DateTime date)
+        {
+            Guard.Against.Null(restaurantPoll, nameof(restaurantPoll));
+            Guard.Against.Null(voter, nameof(voter));
+            Guard.Against.Null(restaurant, nameof(restaurant));
+            if (date <= DateTime.MinValue)
+            {
+                throw new ArgumentNullException(nameof(date));
+            }
+
+            RestaurantPoll = restaurantPoll;
+            Restaurant = restaurant;
+            Voter = voter;
+            Date = date;
+        }
     }
 }

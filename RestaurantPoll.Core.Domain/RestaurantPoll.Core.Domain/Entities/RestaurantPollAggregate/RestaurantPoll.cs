@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using PartiuAlmoco.Core.Domain.Interfaces;
+using PartiuAlmoco.Core.Domain.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 {
     public class RestaurantPoll : Entity, IAggregateRoot
     {
+        private List<Restaurant> _allRestaurants = new List<Restaurant>();
+        private List<RestaurantPollResult> _pollResultsFromLast30Days = new List<RestaurantPollResult>();
+        private List<RestaurantPollVote> _votes = new List<RestaurantPollVote>();
+
         public virtual string Name { get; private set; }
 
         /// <summary>
@@ -20,17 +25,17 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         /// <summary>
         /// Todos restaurantes participando da votação.
         /// </summary>
-        public virtual IEnumerable<Restaurant> AllRestaurants { get; private set; }
+        public virtual IEnumerable<Restaurant> AllRestaurants => _allRestaurants.AsReadOnly();
 
         /// <summary>
         /// Contém os ultimos 30 resultados ordenados por Data Decrescente.
         /// </summary>
-        public virtual IEnumerable<RestaurantPollResult> PollResultsFromLast30Days { get; private set; }
+        public virtual IEnumerable<RestaurantPollResult> PollResultsFromLast30Days => _pollResultsFromLast30Days.AsReadOnly();
 
         /// <summary>
         /// Votos da votação.
         /// </summary>
-        public virtual IEnumerable<RestaurantPollVote> Votes { get; private set; }
+        public virtual IEnumerable<RestaurantPollVote> Votes => _votes.AsReadOnly();
 
         /// <summary>
         /// Restaurante vencedor da votação.
@@ -39,10 +44,28 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
 
         public void AddVote(Restaurant restaurant, User user)
         {
-            // TODO: regras de negocio
+            Guard.Against.Null(restaurant, nameof(restaurant));
+            Guard.Against.Null(user, nameof(user));
+
+            if (_votes.Any(vote => vote.Voter.Id == user.Id))
+            {
+                throw new ApplicationException($"User ${user.FullName} already voted in this poll.");
+            }
+
+            _votes.Add(new RestaurantPollVote(this, user, restaurant, DateTime.Now));
         }
 
-        public RestaurantPoll(Guid id, 
+        public bool DidRestaurantWonThisWeek(Restaurant restaurant)
+        {
+            Guard.Against.Null(restaurant, nameof(restaurant));
+
+            var restaurantLastVictory = _pollResultsFromLast30Days.FirstOrDefault(result => result.WinnerRestaurant.Id == restaurant.Id);
+            return (restaurantLastVictory != null && restaurantLastVictory.Date.WeekOfYear() >= DateTime.Now.WeekOfYear());
+        }
+
+        #region Constructor
+
+        public RestaurantPoll(Guid id,
             string name,
             DateTime date,
             IEnumerable<Restaurant> restaurants,
@@ -63,10 +86,12 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             Id = id;
             Name = name;
             Date = date;
-            AllRestaurants = restaurants.ToList().AsReadOnly();
-            PollResultsFromLast30Days = pollResultsFromLast30Days.ToList().AsReadOnly();
-            Votes = votes.ToList().AsReadOnly();
+            _allRestaurants = restaurants.ToList();
+            _pollResultsFromLast30Days = pollResultsFromLast30Days.ToList();
+            _votes = votes.ToList();
             WinnerRestaurant = winnerRestaurant;
         }
+
+        #endregion
     }
 }
