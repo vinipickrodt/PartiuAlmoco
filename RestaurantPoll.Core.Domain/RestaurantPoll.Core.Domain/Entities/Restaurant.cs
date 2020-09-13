@@ -37,5 +37,8 @@ namespace PartiuAlmoco.Core.Domain.Entities
             Website = website;
             Phone = phone;
         }
+
+        // Entity Framework
+        protected Restaurant() { }
     }
 }

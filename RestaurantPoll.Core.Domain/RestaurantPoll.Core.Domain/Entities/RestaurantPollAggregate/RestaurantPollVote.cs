@@ -43,5 +43,8 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             Voter = voter;
             Date = date;
         }
+
+        // Entity Framework
+        protected RestaurantPollVote() { }
     }
 }

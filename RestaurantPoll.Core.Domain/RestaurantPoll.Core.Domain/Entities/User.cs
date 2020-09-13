@@ -23,5 +23,8 @@ namespace PartiuAlmoco.Core.Domain.Entities
             FriendlyName = friendlyName;
             Email = email;
         }
+
+        // Entity Framework
+        protected User() { }
     }
 }

@@ -120,6 +120,9 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             WinnerRestaurant = winnerRestaurant;
         }
 
+        // Entity Framework
+        protected RestaurantPoll() { }
+
         #endregion
     }
 }
