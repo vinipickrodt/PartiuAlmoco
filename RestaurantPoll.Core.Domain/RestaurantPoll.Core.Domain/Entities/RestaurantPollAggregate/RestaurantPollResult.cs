@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,5 +29,24 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         /// Total de votos da votação.
         /// </summary>
         public virtual int TotalVotes { get; private set; }
+
+        public RestaurantPollResult(Guid id, RestaurantPoll restaurantPoll, DateTime date, Restaurant winnerRestaurant, int totalVotes)
+        {
+            Guard.Against.NullOrEmpty(id, nameof(id));
+            Guard.Against.Null(restaurantPoll, nameof(restaurantPoll));
+            Guard.Against.Null(winnerRestaurant, nameof(winnerRestaurant));
+            Guard.Against.NegativeOrZero(totalVotes, nameof(totalVotes));
+
+            if (date <= DateTime.MinValue)
+            {
+                throw new ArgumentException("Invalid date");
+            }
+
+            Id = id;
+            RestaurantPoll = restaurantPoll;
+            Date = date;
+            WinnerRestaurant = winnerRestaurant;
+            TotalVotes = totalVotes;
+        }
     }
 }
