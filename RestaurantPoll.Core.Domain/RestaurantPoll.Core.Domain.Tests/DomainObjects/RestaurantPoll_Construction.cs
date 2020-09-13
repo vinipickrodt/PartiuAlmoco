@@ -20,7 +20,7 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
 
             // must fail
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
-                new RestaurantPoll(Guid.Empty, "Nome", DateTime.Now, restaurants, new List<RestaurantPollResult>(), new List<RestaurantPollVote>(), null)));
+                new RestaurantPoll(Guid.Empty, "Nome", DateTime.Now, restaurants, null)));
         }
 
         [Fact]
@@ -32,19 +32,16 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
             restaurants.Add(new Restaurant(validGuid, "Pizza Hut", "http://www.pizzahut.com", ""));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() =>
-                new RestaurantPoll(validGuid, null, DateTime.Now, restaurants, new List<RestaurantPollResult>(), new List<RestaurantPollVote>(), null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, null, DateTime.Now, restaurants, null)));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() =>
-                new RestaurantPoll(validGuid, "", DateTime.Now, restaurants, new List<RestaurantPollResult>(), new List<RestaurantPollVote>(), null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "", DateTime.Now, restaurants, null)));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() =>
-                new RestaurantPoll(validGuid, "     ", DateTime.Now, restaurants, new List<RestaurantPollResult>(), new List<RestaurantPollVote>(), null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "     ", DateTime.Now, restaurants, null)));
 
             // must pass
-            new RestaurantPoll(validGuid, "Almoço", DateTime.Now, restaurants, new List<RestaurantPollResult>(), new List<RestaurantPollVote>(), null);
+            new RestaurantPoll(validGuid, "Almoço", DateTime.Now, restaurants, null);
         }
     }
 }

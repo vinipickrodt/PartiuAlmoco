@@ -10,10 +10,10 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
     public interface IRestaurantPollRepository
     {
         /// <summary>
-        /// Busca a votação por data. Incluindo os ultimos 1000 votos e os ultimos 30 resultados.
+        /// Busca a votação por data. Incluindo todos os votos e os ultimos 100 resultados das ultimas votações.
         /// </summary>
         /// <param name="date">Data em que ocorreu a votação.</param>
-        /// <returns>Return a votação.</returns>
-        RestaurantPoll GetPollByDate(DateTime date); 
+        /// <returns>Retorna a votação.</returns>
+        RestaurantPoll GetPollByDate(DateTime date);
     }
 }

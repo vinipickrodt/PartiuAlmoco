@@ -12,7 +12,7 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
     public class RestaurantPoll : Entity, IAggregateRoot
     {
         private List<Restaurant> _allRestaurants = new List<Restaurant>();
-        private List<RestaurantPollResult> _pollResultsFromLast30Days = new List<RestaurantPollResult>();
+        private List<RestaurantPollResult> _pollResults = new List<RestaurantPollResult>();
         private List<RestaurantPollVote> _votes = new List<RestaurantPollVote>();
 
         public virtual string Name { get; private set; }
@@ -28,9 +28,9 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         public virtual IEnumerable<Restaurant> AllRestaurants => _allRestaurants.AsReadOnly();
 
         /// <summary>
-        /// Contém os ultimos 30 resultados ordenados por Data Decrescente.
+        /// Contém os ultimos 100 resultados ordenados por Data Decrescente.
         /// </summary>
-        public virtual IEnumerable<RestaurantPollResult> PollResultsFromLast30Days => _pollResultsFromLast30Days.AsReadOnly();
+        public virtual IEnumerable<RestaurantPollResult> PollResults => _pollResults.AsReadOnly();
 
         /// <summary>
         /// Votos da votação.
@@ -52,15 +52,49 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
                 throw new ApplicationException($"User ${user.FullName} already voted in this poll.");
             }
 
-            _votes.Add(new RestaurantPollVote(this, user, restaurant, DateTime.Now));
+            _votes.Add(new RestaurantPollVote(this, user, restaurant, Date));
         }
 
         public bool DidRestaurantWonThisWeek(Restaurant restaurant)
         {
             Guard.Against.Null(restaurant, nameof(restaurant));
 
-            var restaurantLastVictory = _pollResultsFromLast30Days.FirstOrDefault(result => result.WinnerRestaurant.Id == restaurant.Id);
+            var restaurantLastVictory = _pollResults.FirstOrDefault(result => result.WinnerRestaurant.Id == restaurant.Id);
             return (restaurantLastVictory != null && restaurantLastVictory.Date.WeekOfYear() >= DateTime.Now.WeekOfYear());
+        }
+
+        public void SetPollResults(IEnumerable<RestaurantPollResult> pollResults)
+        {
+            Guard.Against.Null(pollResults, nameof(pollResults));
+
+            if (pollResults.Any(result => result.RestaurantPoll.Id != this.Id))
+            {
+                throw new InvalidOperationException("poll results do not match with this pollId.");
+            }
+
+            if (pollResults.Any(result => result.Date.Date > this.Date.Date))
+            {
+                throw new InvalidOperationException("poll result cannot have a date greater than this poll date.");
+            }
+
+            _pollResults = pollResults.OrderByDescending(result => result.Date).ToList();
+        }
+
+        public void SetVotes(IEnumerable<RestaurantPollVote> votes)
+        {
+            Guard.Against.Null(votes, nameof(votes));
+
+            if (_votes.Any(v => v.RestaurantPoll.Id != this.Id))
+            {
+                throw new InvalidOperationException("votes do not match with this pollId.");
+            }
+
+            if (_votes.Any(v => v.Date.Date != this.Date.Date))
+            {
+                throw new InvalidOperationException("votes do not match dates with this poll date.");
+            }
+
+            _votes = votes.ToList();
         }
 
         #region Constructor
@@ -69,16 +103,12 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             string name,
             DateTime date,
             IEnumerable<Restaurant> restaurants,
-            IEnumerable<RestaurantPollResult> pollResultsFromLast30Days,
-            IEnumerable<RestaurantPollVote> votes,
             Restaurant winnerRestaurant)
         {
             Guard.Against.NullOrEmpty(id, nameof(id));
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             if (date <= DateTime.MinValue) throw new ArgumentNullException(nameof(date));
             Guard.Against.NullOrEmpty(restaurants, nameof(restaurants));
-            Guard.Against.Null(pollResultsFromLast30Days, nameof(pollResultsFromLast30Days));
-            Guard.Against.Null(votes, nameof(votes));
 
             if (winnerRestaurant != null && !restaurants.Contains(winnerRestaurant))
                 throw new InvalidOperationException($"Restaurant '{winnerRestaurant.Name}' is not in the list of participating restaurants.");
@@ -87,8 +117,6 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             Name = name;
             Date = date;
             _allRestaurants = restaurants.ToList();
-            _pollResultsFromLast30Days = pollResultsFromLast30Days.ToList();
-            _votes = votes.ToList();
             WinnerRestaurant = winnerRestaurant;
         }
 

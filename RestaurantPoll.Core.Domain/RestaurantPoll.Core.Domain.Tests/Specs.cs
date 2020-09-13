@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Xunit;
+using PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate;
 
 namespace PartiuAlmoco.Core.Domain.Tests
 {
@@ -16,7 +17,7 @@ namespace PartiuAlmoco.Core.Domain.Tests
             List<Mock<Restaurant>> mockedRestaurants = GetMockedRestaurants();
 
             var restaurantPoll = Artifacts.GetRestaurantPoll();
-            var restaurant = Artifacts.GetRestaurant();
+            var restaurant = Artifacts.GetRestaurant1();
             var user = Artifacts.GetUser();
 
             restaurantPoll.AddVote(restaurant, user);
@@ -24,6 +25,33 @@ namespace PartiuAlmoco.Core.Domain.Tests
 
             Assert.ThrowsAny<Exception>(() => restaurantPoll.AddVote(restaurant, user));
             Assert.Single(restaurantPoll.Votes);
+        }
+
+        [Fact]
+        public void Specification_Somente_Um_Restaurante_Vencedor_Por_Semana()
+        {
+            List<Mock<User>> mockedUsers = GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = GetMockedRestaurants();
+
+            var restaurant1 = Artifacts.GetRestaurant1();
+            var restaurant2 = Artifacts.GetRestaurant2();
+            var poll = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 9, 13), new List<Restaurant>() { restaurant1, restaurant2 }, null);
+            var pollResults = new List<RestaurantPollResult>()
+            {
+                new RestaurantPollResult(Guid.NewGuid(), poll, new DateTime(2020, 9, 6), restaurant1, 42)
+            };
+            poll.SetPollResults(pollResults);
+
+            var user = Artifacts.GetUser();
+
+            poll.AddVote(restaurant1, user);
+            Assert.Single(poll.Votes);
+
+            var poll2 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 9, 12), new List<Restaurant>() { restaurant1, restaurant2 }, null);
+            poll2.SetPollResults(pollResults);
+
+            Assert.ThrowsAny<Exception>(() => poll.AddVote(restaurant1, user));
+            Assert.Empty(poll2.Votes);
         }
 
         private List<Mock<Restaurant>> GetMockedRestaurants()
