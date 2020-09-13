@@ -50,6 +50,16 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             IEnumerable<RestaurantPollVote> votes,
             Restaurant winnerRestaurant)
         {
+            Guard.Against.NullOrEmpty(id, nameof(id));
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            if (date <= DateTime.MinValue) throw new ArgumentNullException(nameof(date));
+            Guard.Against.NullOrEmpty(restaurants, nameof(restaurants));
+            Guard.Against.Null(pollResultsFromLast30Days, nameof(pollResultsFromLast30Days));
+            Guard.Against.Null(votes, nameof(votes));
+
+            if (winnerRestaurant != null && !restaurants.Contains(winnerRestaurant))
+                throw new InvalidOperationException($"Restaurant '{winnerRestaurant.Name}' is not in the list of participating restaurants.");
+
             Id = id;
             Name = name;
             Date = date;

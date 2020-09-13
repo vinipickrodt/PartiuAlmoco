@@ -22,8 +22,9 @@ namespace PartiuAlmoco.Core.Domain.Entities
         /// </summary>
         public string Phone { get; set; }
 
-        public Restaurant(string name, string website, string phone)
+        public Restaurant(Guid id, string name, string website, string phone)
         {
+            Guard.Against.NullOrEmpty(id, nameof(id));
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             if (string.IsNullOrWhiteSpace(website) && string.IsNullOrWhiteSpace(phone))
@@ -31,6 +32,7 @@ namespace PartiuAlmoco.Core.Domain.Entities
                 throw new ArgumentException("A restaurant must have at least a website or a phone.");
             }
 
+            Id = id;
             Name = name;
             Website = website;
             Phone = phone;
