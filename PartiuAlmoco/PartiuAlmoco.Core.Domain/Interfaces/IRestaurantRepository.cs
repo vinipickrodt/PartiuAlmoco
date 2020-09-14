@@ -10,5 +10,9 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
     public interface IRestaurantRepository
     {
         IEnumerable<Restaurant> GetAllRestaurants();
+        Restaurant GetById(Guid id);
+        void Add(Restaurant restaurant);
+        void Update(Restaurant restaurant);
+        void Remove(Restaurant restaurant);
     }
 }

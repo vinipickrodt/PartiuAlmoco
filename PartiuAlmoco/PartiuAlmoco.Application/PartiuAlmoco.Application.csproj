@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="3.0.0" />
+    <ProjectReference Include="..\PartiuAlmoco.Core.Domain\PartiuAlmoco.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,7 @@ namespace PartiuAlmoco.Infra.Domain
         public DbSet<RestaurantPollVote> Votes { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserPassword> UserPasswords { get; set; }
         public IAppSettings Settings { get; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,14 +27,17 @@ namespace PartiuAlmoco.Infra.Domain
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(Settings.DatabaseConnectionString);
+            //// TODO: Descomentar a linha abaixo e o construtor sem parâmetros e rodar os comandos do migration...
+            //// dotnet ef migrations add Initial --project PartiuAlmoco.Infra.Domain
+            //// dotnet ef database update --project PartiuAlmoco.Infra.Domain
+            //optionsBuilder.UseSqlite(@"Data Source=c:\temp\data.sqlite");
+
+            //optionsBuilder.UseSqlite(Settings.DatabaseConnectionString);
 
             base.OnConfiguring(optionsBuilder);
         }
 
-        public PartiuAlmocoDbContext(IAppSettings settings)
-        {
-            Settings = settings;
-        }
+        public PartiuAlmocoDbContext(DbContextOptions<PartiuAlmocoDbContext> options) : base(options) { }
+        public PartiuAlmocoDbContext() { }
     }
 }

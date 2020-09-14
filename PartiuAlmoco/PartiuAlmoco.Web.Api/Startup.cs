@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
+using PartiuAlmoco.Application;
+using PartiuAlmoco.Core.Domain.Interfaces;
+using PartiuAlmoco.Infra.Domain;
 
 namespace PartiuAlmoco.Web.Api
 {
@@ -112,15 +116,15 @@ namespace PartiuAlmoco.Web.Api
                         new List<string>()
                     }
                 });
-
-                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                //{
-                //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                //    Name = "Authorization",
-                //    In = ParameterLocation.Header,
-                //    Type = SecuritySchemeType.ApiKey
-                //});
             });
+            
+            // TODO: Passar para o config
+            services.AddDbContext<PartiuAlmocoDbContext>(opt => opt.UseSqlite(@"Data Source=C:\temp\data.sqlite"));
+            services.AddTransient<IRestaurantPollRepository, RestaurantPollRepository>();
+            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ILoginServices, LoginServices>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

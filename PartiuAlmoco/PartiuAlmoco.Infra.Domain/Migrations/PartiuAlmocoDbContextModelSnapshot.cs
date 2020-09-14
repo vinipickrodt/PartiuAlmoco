@@ -28,15 +28,10 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("RestaurantPollId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Website")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RestaurantPollId");
 
                     b.ToTable("Restaurants");
                 });
@@ -139,11 +134,23 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PartiuAlmoco.Core.Domain.Entities.Restaurant", b =>
+            modelBuilder.Entity("PartiuAlmoco.Core.Domain.Entities.UserPassword", b =>
                 {
-                    b.HasOne("PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate.RestaurantPoll", null)
-                        .WithMany("AllRestaurants")
-                        .HasForeignKey("RestaurantPollId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHashBase64")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPasswords");
                 });
 
             modelBuilder.Entity("PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate.RestaurantPoll", b =>
@@ -156,7 +163,7 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
             modelBuilder.Entity("PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate.RestaurantPollResult", b =>
                 {
                     b.HasOne("PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate.RestaurantPoll", "RestaurantPoll")
-                        .WithMany("PollResults")
+                        .WithMany()
                         .HasForeignKey("RestaurantPollId");
 
                     b.HasOne("PartiuAlmoco.Core.Domain.Entities.Restaurant", "WinnerRestaurant")
@@ -171,12 +178,19 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                         .HasForeignKey("RestaurantId");
 
                     b.HasOne("PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate.RestaurantPoll", "RestaurantPoll")
-                        .WithMany("Votes")
+                        .WithMany()
                         .HasForeignKey("RestaurantPollId");
 
                     b.HasOne("PartiuAlmoco.Core.Domain.Entities.User", "Voter")
                         .WithMany()
                         .HasForeignKey("VoterId");
+                });
+
+            modelBuilder.Entity("PartiuAlmoco.Core.Domain.Entities.UserPassword", b =>
+                {
+                    b.HasOne("PartiuAlmoco.Core.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

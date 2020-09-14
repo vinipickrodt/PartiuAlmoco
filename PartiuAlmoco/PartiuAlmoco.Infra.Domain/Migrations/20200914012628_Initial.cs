@@ -8,6 +8,20 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Restaurants",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Website = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -19,36 +33,6 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PollResults",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    RestaurantPollId = table.Column<Guid>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    WinnerRestaurantId = table.Column<Guid>(nullable: true),
-                    TotalVotes = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PollResults", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Restaurants",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Website = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    RestaurantPollId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Restaurants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +49,52 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                     table.PrimaryKey("PK_RestaurantPolls", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RestaurantPolls_Restaurants_WinnerRestaurantId",
+                        column: x => x.WinnerRestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPasswords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: true),
+                    PasswordHashBase64 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPasswords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPasswords_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PollResults",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RestaurantPollId = table.Column<Guid>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    WinnerRestaurantId = table.Column<Guid>(nullable: true),
+                    TotalVotes = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PollResults_RestaurantPolls_RestaurantPollId",
+                        column: x => x.RestaurantPollId,
+                        principalTable: "RestaurantPolls",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PollResults_Restaurants_WinnerRestaurantId",
                         column: x => x.WinnerRestaurantId,
                         principalTable: "Restaurants",
                         principalColumn: "Id",
@@ -120,9 +150,9 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                 column: "WinnerRestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_RestaurantPollId",
-                table: "Restaurants",
-                column: "RestaurantPollId");
+                name: "IX_UserPasswords_UserId",
+                table: "UserPasswords",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_RestaurantId",
@@ -138,49 +168,24 @@ namespace PartiuAlmoco.Infra.Domain.Migrations
                 name: "IX_Votes_VoterId",
                 table: "Votes",
                 column: "VoterId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PollResults_RestaurantPolls_RestaurantPollId",
-                table: "PollResults",
-                column: "RestaurantPollId",
-                principalTable: "RestaurantPolls",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PollResults_Restaurants_WinnerRestaurantId",
-                table: "PollResults",
-                column: "WinnerRestaurantId",
-                principalTable: "Restaurants",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Restaurants_RestaurantPolls_RestaurantPollId",
-                table: "Restaurants",
-                column: "RestaurantPollId",
-                principalTable: "RestaurantPolls",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Restaurants_RestaurantPolls_RestaurantPollId",
-                table: "Restaurants");
-
             migrationBuilder.DropTable(
                 name: "PollResults");
+
+            migrationBuilder.DropTable(
+                name: "UserPasswords");
 
             migrationBuilder.DropTable(
                 name: "Votes");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "RestaurantPolls");
 
             migrationBuilder.DropTable(
-                name: "RestaurantPolls");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Restaurants");

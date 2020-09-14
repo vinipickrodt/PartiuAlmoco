@@ -5,8 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PartiuAlmoco.Application\PartiuAlmoco.Application.csproj" />
+    <ProjectReference Include="..\PartiuAlmoco.Core.Domain\PartiuAlmoco.Core.Domain.csproj" />
+    <ProjectReference Include="..\PartiuAlmoco.Infra.Domain\PartiuAlmoco.Infra.Domain.csproj" />
   </ItemGroup>
 
 

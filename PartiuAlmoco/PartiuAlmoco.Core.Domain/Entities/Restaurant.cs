@@ -10,17 +10,19 @@ namespace PartiuAlmoco.Core.Domain.Entities
         /// <summary>
         /// Nome do restaurante.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Site do restaurante.
         /// </summary>
-        public string Website { get; set; }
+        public string Website { get; private set; }
 
         /// <summary>
         /// Telefone do restaurante.
         /// </summary>
-        public string Phone { get; set; }
+        public string Phone { get; private set; }
+
+        #region Constructor
 
         public Restaurant(Guid id, string name, string website, string phone)
         {
@@ -40,5 +42,7 @@ namespace PartiuAlmoco.Core.Domain.Entities
 
         // Entity Framework
         protected Restaurant() { }
+
+        #endregion
     }
 }
