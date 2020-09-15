@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace PartiuAlmoco.Web.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
         private readonly ILoginServices loginServices;
@@ -29,7 +29,10 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.FullName),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Email),
+                    new Claim("FriendlyName", user.FriendlyName),
+                    new Claim("Id", user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
                 };
 
@@ -49,7 +52,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
 
                 var tokenJson = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return Ok(new { access_token = tokenJson });
+                return Ok(new { access_token = tokenJson, user_info = user });
             }
 
             return NotFound();

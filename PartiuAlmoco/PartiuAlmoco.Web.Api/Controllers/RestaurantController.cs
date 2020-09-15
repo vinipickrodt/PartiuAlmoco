@@ -13,7 +13,7 @@ using PartiuAlmoco.Web.Api.Helpers;
 namespace PartiuAlmoco.Web.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantRepository repository;
@@ -40,7 +40,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
             {
                 return BadRequest("Empty object.");
             }
-            
+
             restaurantDTO.Id = Guid.NewGuid();
             var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
             repository.Add(restaurant);
@@ -84,6 +84,14 @@ namespace PartiuAlmoco.Web.Api.Controllers
             repository.Remove(restaurant);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route(nameof(GetById))]
+        [Authorize]
+        public ActionResult<RestaurantDTO> GetById(Guid id)
+        {
+            return Ok(repository.GetById(id));
         }
     }
 }

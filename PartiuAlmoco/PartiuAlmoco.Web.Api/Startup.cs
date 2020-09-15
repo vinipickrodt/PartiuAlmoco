@@ -33,6 +33,18 @@ namespace PartiuAlmoco.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    //builder.WithOrigins("http://localhost:5001/");
+                    builder
+                          .AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             services.AddAuthentication("OAuth")
                 .AddJwtBearer("OAuth", config =>
                 {
@@ -117,14 +129,14 @@ namespace PartiuAlmoco.Web.Api
                     }
                 });
             });
-            
+
             // TODO: Passar para o config
             services.AddDbContext<PartiuAlmocoDbContext>(opt => opt.UseSqlite(@"Data Source=C:\temp\data.sqlite"));
             services.AddTransient<IRestaurantPollRepository, RestaurantPollRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ILoginServices, LoginServices>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -146,6 +158,7 @@ namespace PartiuAlmoco.Web.Api
             });
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

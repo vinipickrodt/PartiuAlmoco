@@ -41,11 +41,18 @@ namespace PartiuAlmoco.Infra.Domain
             var pollResults = dbContext.PollResults
                 .Where(pr => pr.RestaurantPoll.Id == poll.Id && pr.Date.Date <= date.Date)
                 .OrderByDescending(pr => pr.Date)
+                .Include(v => v.WinnerRestaurant)
+                .Include(v => v.RestaurantPoll)
                 .Take(100).ToList();
             poll.SetPollResults(pollResults);
 
             // busca todos os votos (máximo = 5000).
-            var votes = dbContext.Votes.Where(v => v.RestaurantPoll.Id == poll.Id).Take(5000).ToList();
+            var votes = dbContext.Votes
+                .Where(v => v.RestaurantPoll.Id == poll.Id)
+                .Include(v => v.Restaurant)
+                .Include(v => v.Voter)
+                .Include(v => v.RestaurantPoll)
+                .Take(5000).ToList();
             poll.SetVotes(votes);
 
             return poll;
@@ -69,6 +76,12 @@ namespace PartiuAlmoco.Infra.Domain
             var restaurantPoll = new RestaurantPoll(Guid.NewGuid(), name, date, restaurantRepository.GetAllRestaurants(), null);
             dbContext.RestaurantPolls.Add(restaurantPoll);
             return restaurantPoll;
+        }
+
+        public void Add(RestaurantPoll poll)
+        {
+            dbContext.RestaurantPolls.Add(poll);
+            dbContext.SaveChanges();
         }
     }
 }

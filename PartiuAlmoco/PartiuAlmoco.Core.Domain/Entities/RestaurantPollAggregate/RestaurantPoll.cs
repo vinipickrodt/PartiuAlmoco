@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using PartiuAlmoco.Core.Domain.DTO;
 using PartiuAlmoco.Core.Domain.Interfaces;
 using PartiuAlmoco.Core.Domain.Utils;
 using System;
@@ -28,6 +29,15 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         public virtual IEnumerable<Restaurant> AllRestaurants => _allRestaurants.AsReadOnly();
 
         /// <summary>
+        /// Busca todos os restaurantes válidos para esta votação.
+        /// </summary>
+        /// <returns>Retorna os restaurantes válidos para receberem votos.</returns>
+        public IEnumerable<Restaurant> GetRestaurantsValidForPoll()
+        {
+            return this.AllRestaurants.Where(restaurant => !DidRestaurantWonThisWeek(restaurant));
+        }
+
+        /// <summary>
         /// Contém os ultimos 100 resultados ordenados por Data Decrescente.
         /// </summary>
         public virtual IEnumerable<RestaurantPollResult> PollResults => _pollResults.AsReadOnly();
@@ -53,6 +63,16 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             }
 
             _votes.Add(new RestaurantPollVote(this, user, restaurant, Date));
+        }
+
+        /// <summary>
+        /// Retorna o voto de um usuário.
+        /// </summary>
+        /// <param name="user">Usuário que votou.</param>
+        /// <returns>Retorna o voto caso o usuário o tenha realizado.</returns>
+        public RestaurantPollVote GetUserVote(User user)
+        {
+            return Votes.FirstOrDefault(vote => vote.Voter.Id == user.Id);
         }
 
         public bool DidRestaurantWonThisWeek(Restaurant restaurant)
@@ -95,6 +115,17 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             }
 
             _votes = votes.ToList();
+        }
+
+        // TODO: Validar se não é melhor colocar este método no Application Service...
+        public IEnumerable<RestaurantPollRanking> GetRanking()
+        {
+            var dictRestaurantes = this.Votes
+                .GroupBy(v => v.Restaurant.Id).ToDictionary(g => g.Key, g => g.First().Restaurant);
+
+            return this.Votes.GroupBy(v => v.Restaurant.Id)
+                .Select(g => new RestaurantPollRanking(g.Count(), dictRestaurantes[g.Key]))
+                .OrderByDescending(it => it.Votes);
         }
 
         #region Constructor

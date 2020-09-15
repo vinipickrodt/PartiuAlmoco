@@ -29,5 +29,7 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
         /// </summary>
         /// <param name="poll">Votação</param>
         void Confirm(RestaurantPoll poll);
+
+        void Add(RestaurantPoll poll);
     }
 }
