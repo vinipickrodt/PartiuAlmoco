@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartiuAlmoco.Core.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartiuAlmoco.Core.Domain.Tests", "PartiuAlmoco.Core.Domain.Tests\PartiuAlmoco.Core.Domain.Tests.csproj", "{06E2D664-B83A-4477-BE74-AD5C47058444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartiuAlmoco.Web.Api", "PartiuAlmoco.Web.Api\PartiuAlmoco.Web.Api.csproj", "{1B119553-1297-498C-99F2-DDE9A555E616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartiuAlmoco.Web.Api", "PartiuAlmoco.Web.Api\PartiuAlmoco.Web.Api.csproj", "{1B119553-1297-498C-99F2-DDE9A555E616}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartiuAlmoco.Application", "PartiuAlmoco.Application\PartiuAlmoco.Application.csproj", "{2DC637EE-3E9C-4112-AFAB-1607C52365B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartiuAlmoco.Application", "PartiuAlmoco.Application\PartiuAlmoco.Application.csproj", "{2DC637EE-3E9C-4112-AFAB-1607C52365B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartiuAlmoco.Web.Client", "PartiuAlmoco.Web.Client\PartiuAlmoco.Web.Client.csproj", "{5725C28F-0132-489E-9924-06ECEE841907}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartiuAlmoco.Web.Client", "PartiuAlmoco.Web.Client\PartiuAlmoco.Web.Client.csproj", "{4BCC1766-6AA8-4825-8863-1500C5C98716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{2DC637EE-3E9C-4112-AFAB-1607C52365B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC637EE-3E9C-4112-AFAB-1607C52365B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DC637EE-3E9C-4112-AFAB-1607C52365B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5725C28F-0132-489E-9924-06ECEE841907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5725C28F-0132-489E-9924-06ECEE841907}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5725C28F-0132-489E-9924-06ECEE841907}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5725C28F-0132-489E-9924-06ECEE841907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCC1766-6AA8-4825-8863-1500C5C98716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCC1766-6AA8-4825-8863-1500C5C98716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCC1766-6AA8-4825-8863-1500C5C98716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCC1766-6AA8-4825-8863-1500C5C98716}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

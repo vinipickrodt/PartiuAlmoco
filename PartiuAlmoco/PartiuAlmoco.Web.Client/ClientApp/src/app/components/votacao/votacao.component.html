@@ -1,0 +1,23 @@
+<div class="poll-restaurants">
+    <h1>Votação de Hoje</h1>
+
+    <p *ngIf="!getVotedRestaurant()">Escolha onde você gostaria de almoçar hoje.</p>
+    <p *ngIf="getVotedRestaurant()"><b>Partiu {{getVotedRestaurant().name}}!</b></p>
+
+    <div class="row" *ngFor="let restaurantsRow of getRestaurantRows()">
+        <div *ngFor="let restaurant of restaurantsRow" class={{getRestaurantClassName(restaurant)}}
+            (click)="select(restaurant)">
+            <span class="badge badge-light">{{restaurant.votos}}</span>
+            <div *ngIf="isAuthenticated && !votedRestaurantId"><a href="#"
+                    onclick="return false">{{restaurant.name}}</a></div>
+            <div *ngIf="!isAuthenticated || votedRestaurantId">{{restaurant.name}}</div>
+            <button *ngIf="isAuthenticated && !votedRestaurantId && isSelected(restaurant)"
+                (click)="confirmarVoto(restaurant)" type="button" class="btn btn-primary btn-lg">
+                Confirmar Voto
+            </button>
+            <div *ngIf="isVoted(restaurant)">
+                <strong>Voto Confirmado!</strong>
+            </div>
+        </div>
+    </div>
+</div>

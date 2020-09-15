@@ -59,7 +59,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         public IActionResult GetMyVote()
         {
             var vote = GetDefaultPoll().GetUserVote(GetCurrentUser())?.Restaurant?.Id;
-            return Ok(vote.HasValue ? vote.Value.ToString() : null);
+            return Ok(vote.HasValue ? (object)vote.Value : null);
         }
 
         [HttpGet]

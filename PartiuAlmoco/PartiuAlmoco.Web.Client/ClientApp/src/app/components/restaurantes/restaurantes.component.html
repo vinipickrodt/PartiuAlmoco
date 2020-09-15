@@ -1,0 +1,23 @@
+<button class="btn btn-primary" type="submit" [routerLink]="['/restaurante', '']">Cadastrar Novo Restaurante!</button>
+<br>
+<br>
+<div class="list-group">
+    <a *ngFor="let restaurant of restaurants" href="#" class="list-group-item list-group-item-action"
+        [routerLink]="['/restaurante', restaurant.id]">
+        <div class="media">
+            <!-- <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="https://diariodocomercio.com.br/wp-content/uploads/2019/09/pizzahut.jpg" style="height: 230px;">
+                </a>
+            </div> -->
+            <div class="media-body" style="padding-left: 16px">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{restaurant.name}}</h5>
+                    <!-- <small>3 days ago</small> -->
+                </div>
+                <p class="mb-1">🌐 {{restaurant.website || "(sem site)"}}</p>
+                <p class="mb-1">📞 {{restaurant.phone || "(sem telefone)"}}</p>
+            </div>
+        </div>
+    </a>
+</div>
