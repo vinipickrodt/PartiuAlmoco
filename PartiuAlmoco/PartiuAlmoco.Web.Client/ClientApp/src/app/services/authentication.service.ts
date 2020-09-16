@@ -15,7 +15,7 @@ export class AuthenticationService {
   public authenticationChanged: EventEmitter<User> = new EventEmitter<User>();
 
   public login(email: string, password: string) {
-    return this.http.get(`http://localhost:53233/api/Login/GetJwtToken?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+    return this.http.get(`${environment.api_endpoint}Login/GetJwtToken?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
       .pipe(tap((result) => {
         environment.jwt_token = result["access_token"];
         environment.current_user = result["user_info"];

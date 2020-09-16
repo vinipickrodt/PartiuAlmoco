@@ -5,6 +5,7 @@ import { flatMap } from 'rxjs/operators';
 import { Ranking } from '../interfaces/ranking';
 import { Restaurant } from '../interfaces/restaurant';
 import { AuthenticationService } from './authentication.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ApiService {
   constructor(private authentication: AuthenticationService, private http: HttpClient) { }
 
   createUser(fullName: string, friendlyName: string, email: string, password: string) {
-    return this.http.post("http://localhost:53233/api/Login/CreateUser", {
+    return this.http.post(environment.api_endpoint + "Login/CreateUser", {
       fullName,
       friendlyName,
       email,
@@ -25,7 +26,7 @@ export class ApiService {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {
         if (!user) throw new Error("Not Authenticated.");
-        return this.http.post(`http://localhost:53233/api/Restaurant/Create`, restaurant, {
+        return this.http.post(environment.api_endpoint + `Restaurant/Create`, restaurant, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -37,7 +38,7 @@ export class ApiService {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {
         if (!user) throw new Error("Not Authenticated.");
-        return this.http.post(`http://localhost:53233/api/Restaurant/Update`, restaurant, {
+        return this.http.post(environment.api_endpoint + `Restaurant/Update`, restaurant, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -46,18 +47,18 @@ export class ApiService {
   }
 
   getRestaurants(): Observable<Restaurant[]> {
-    return this.http.get<Restaurant[]>("http://localhost:53233/api/Restaurant");
+    return this.http.get<Restaurant[]>(environment.api_endpoint + "Restaurant");
   }
 
   getRestaurantsValidForPoll(): Observable<Restaurant[]> {
-    return this.http.get<Restaurant[]>("http://localhost:53233/api/RestaurantPoll/GetRestaurantsValidForPoll");
+    return this.http.get<Restaurant[]>(environment.api_endpoint + "RestaurantPoll/GetRestaurantsValidForPoll");
   }
 
   getRestaurantById(id: string): Observable<Restaurant> {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {
         if (!user) throw new Error("Not Authenticated.");
-        return this.http.get<Restaurant>(`http://localhost:53233/api/Restaurant/GetById?id=${encodeURIComponent(id)}`, {
+        return this.http.get<Restaurant>(`${environment.api_endpoint}Restaurant/GetById?id=${encodeURIComponent(id)}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -69,7 +70,7 @@ export class ApiService {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {
         if (!user) throw new Error("Not Authenticated.");
-        return this.http.get<Restaurant>(`http://localhost:53233/api/RestaurantPoll/Vote?restaurantId=${encodeURIComponent(restaurantId)}`, {
+        return this.http.get<Restaurant>(`${environment.api_endpoint}RestaurantPoll/Vote?restaurantId=${encodeURIComponent(restaurantId)}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -81,7 +82,7 @@ export class ApiService {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {
         if (!user) throw new Error("Not Authenticated.");
-        return this.http.get<string>(`http://localhost:53233/api/RestaurantPoll/GetMyVote`, {
+        return this.http.get<string>(`${environment.api_endpoint}RestaurantPoll/GetMyVote`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -90,6 +91,6 @@ export class ApiService {
   }
 
   getRanking(): Observable<Ranking[]> {
-    return this.http.get<Ranking[]>(`http://localhost:53233/api/RestaurantPoll/GetRanking`);
+    return this.http.get<Ranking[]>(`${environment.api_endpoint}RestaurantPoll/GetRanking`);
   }
 }

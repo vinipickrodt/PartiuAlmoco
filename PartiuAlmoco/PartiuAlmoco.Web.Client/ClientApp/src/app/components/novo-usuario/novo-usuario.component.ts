@@ -4,6 +4,7 @@ import { catchError } from "rxjs/operators";
 import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-novo-usuario',
@@ -36,8 +37,10 @@ export class NovoUsuarioComponent implements OnInit {
 
     this.api.createUser(fullName, friendlyName, email, password)
       .pipe(
-        catchError(function (a, b) {
-          return throwError(a);
+        catchError(function (err, b) {
+          const errMsg = (typeof err.error === 'object' && err.error !== null) ? JSON.stringify(err.error) : err.error;
+          Swal.fire("Update Failed", errMsg, "error");
+          return throwError(err);
         }))
       .subscribe(response => {
         this.router.navigate(['/entrar']);
