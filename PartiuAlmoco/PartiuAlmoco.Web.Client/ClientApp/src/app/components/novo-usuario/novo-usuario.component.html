@@ -1,20 +1,18 @@
-<div class="form-signup">
-    <div style="text-align: center;">
-        <h3>Cadastro</h3>
-    </div>
-    <label for="inputFirstname" class="sr-only">Primeiro Nome</label>
-    <input type="text" id="inputFirstname" class="form-control" placeholder="Primeiro nome" required=""
-        [(ngModel)]="firstName" />
+<form class="form-signup" [formGroup]="form">
+  <div style="text-align: center;">
+    <h3>Cadastro</h3>
+  </div>
+  <label for="inputFirstname" class="sr-only">Primeiro Nome</label>
+  <input type="text" id="inputFirstname" class="form-control" placeholder="Primeiro nome" formControlName="firstName" />
 
-    <label for="inputLastname" class="sr-only">Último Nome</label>
-    <input type="text" id="inputLastname" class="form-control" placeholder="Último nome" required=""
-        [(ngModel)]="lastName" />
+  <label for="inputLastname" class="sr-only">Último Nome</label>
+  <input type="text" id="inputLastname" class="form-control" placeholder="Último nome" formControlName="lastName" />
 
-    <label for="inputEmail" class="sr-only">E-mail</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Seu e-mail" required="" [(ngModel)]="email" />
+  <label for="inputEmail" class="sr-only">E-mail</label>
+  <input type="email" id="inputEmail" class="form-control" placeholder="Seu e-mail" formControlName="email" />
 
-    <label for="inputPassword" class="sr-only">Senha</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Sua senha" required=""
-        [(ngModel)]="password">
-    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="createUser()">Cadastrar</button>
-</div>
+  <label for="inputPassword" class="sr-only">Senha</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Sua senha" formControlName="password">
+
+  <button [disabled]="!form.valid" class="btn btn-lg btn-primary btn-block" type="submit" (click)="createUser()">Cadastrar</button>
+</form>

@@ -1,21 +1,18 @@
-<div class="form-edit">
-    <div style="text-align: center;">
-        <h3>Restaurante</h3>
-    </div>
-    <label for="inputNome" class="sr-only">Nome</label>
-    <input type="text" id="inputNome" class="form-control" placeholder="Nome do restaurante" required=""
-        [(ngModel)]="restaurant.name" />
-    <br />
+<form class="form-edit" [formGroup]="form">
+  <div style="text-align: center;">
+    <h3>Restaurante</h3>
+  </div>
+  <label for="inputNome" class="sr-only">Nome</label>
+  <input type="text" id="inputNome" class="form-control" placeholder="Nome do restaurante" formControlName="name" />
+  <br />
 
-    <label for="inputSite" class="sr-only">Site</label>
-    <input type="text" id="inputSite" class="form-control" placeholder="Site do restaurante" required
-        [(ngModel)]="restaurant.website" />
-    <br />
+  <label for="inputSite" class="sr-only">Site</label>
+  <input type="text" id="inputSite" class="form-control" placeholder="Site do restaurante" formControlName="website" />
+  <br />
 
-    <label for="inputPhone" class="sr-only">Telefone</label>
-    <input type="text" id="inputPhone" class="form-control" placeholder="Telefone do restaurante" required
-        [(ngModel)]="restaurant.phone" />
-    <br />
+  <label for="inputPhone" class="sr-only">Telefone</label>
+  <input type="text" id="inputPhone" class="form-control" placeholder="Telefone do restaurante" formControlName="phone" />
+  <br />
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="save()">Salvar</button>
-</div>
+  <button [disabled]="!form.valid" class="btn btn-lg btn-primary btn-block" type="submit" (click)="save()">Salvar</button>
+</form>

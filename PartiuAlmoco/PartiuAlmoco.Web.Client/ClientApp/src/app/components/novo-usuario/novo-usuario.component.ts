@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { catchError } from "rxjs/operators";
 import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-novo-usuario',
@@ -10,32 +11,30 @@ import { Router } from '@angular/router';
   styleUrls: ['./novo-usuario.component.css']
 })
 export class NovoUsuarioComponent implements OnInit {
-  constructor(private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private router: Router, private fb: FormBuilder) { }
 
-  ngOnInit() { }
+  form: FormGroup;
 
-  @Input()
-  firstName: string = "";
+  ngOnInit() {
+    this.form = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['email', Validators.required],
+      password: ['password', Validators.required]
+    });
+  }
 
-  @Input()
-  lastName: string = "";
 
-  @Input()
-  email: string = "";
-
-  @Input()
-  password: string = "";
 
   createUser() {
-    const firstName = (this.firstName.trim() || "").trim();
-    const lastName = (this.lastName.trim() || "").trim();
-    const email = (this.email.trim() || "").trim();
-    const password = (this.password.trim() || "").trim();
-
+    const firstName = this.form.get("firstName").value;
+    const lastName = this.form.get("lastName").value;
+    const email = this.form.get("email").value;
+    const password = this.form.get("password").value;
     const fullName = firstName + " " + lastName;
     const friendlyName = firstName;
 
-    this.api.createUser(fullName, friendlyName, this.email, this.password)
+    this.api.createUser(fullName, friendlyName, email, password)
       .pipe(
         catchError(function (a, b) {
           return throwError(a);
