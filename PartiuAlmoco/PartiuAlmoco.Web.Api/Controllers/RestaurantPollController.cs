@@ -35,10 +35,18 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [HttpGet]
         [Authorize]
         [Route(nameof(GetRestaurantsValidForPoll))]
-        public IEnumerable<Restaurant> GetRestaurantsValidForPoll()
+        public ActionResult<IEnumerable<Restaurant>> GetRestaurantsValidForPoll()
         {
-            RestaurantPoll poll = GetDefaultPoll();
-            return poll.GetRestaurantsValidForPoll();
+            try
+            {
+                RestaurantPoll poll = GetDefaultPoll();
+                return Ok(poll.GetValidRestaurantsForPoll());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -46,27 +54,51 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [Route(nameof(Vote))]
         public ActionResult Vote(Guid restaurantId)
         {
-            var poll = GetDefaultPoll();
-            var restaurant = restaurantRepository.GetById(restaurantId);
-            poll.AddVote(restaurant, GetCurrentUser());
-            repository.Confirm(poll);
-            return Ok();
+            try
+            {
+                var poll = GetDefaultPoll();
+                var restaurant = restaurantRepository.GetById(restaurantId);
+                poll.AddVote(restaurant, GetCurrentUser());
+                repository.Confirm(poll);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         [Authorize]
         [Route(nameof(GetMyVote))]
-        public IActionResult GetMyVote()
+        public ActionResult GetMyVote()
         {
-            var vote = GetDefaultPoll().GetUserVote(GetCurrentUser())?.Restaurant?.Id;
-            return Ok(vote.HasValue ? (object)vote.Value : null);
+            try
+            {
+                var vote = GetDefaultPoll().GetUserVote(GetCurrentUser())?.Restaurant?.Id;
+                return Ok(vote.HasValue ? (object)vote.Value : null);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route(nameof(GetRanking))]
         public IActionResult GetRanking()
         {
-            return Ok(GetDefaultPoll().GetRanking());
+            try
+            {
+                return Ok(GetDefaultPoll().GetRanking());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         private User GetCurrentUser()
@@ -84,7 +116,6 @@ namespace PartiuAlmoco.Web.Api.Controllers
             if (poll == null)
             {
                 poll = repository.NewPoll("Almoço", DateTime.Now);
-                repository.Add(poll);
             }
 
             return poll;

@@ -26,9 +26,17 @@ namespace PartiuAlmoco.Web.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Restaurant> Get()
+        public ActionResult<IEnumerable<Restaurant>> Get()
         {
-            return repository.GetAllRestaurants();
+            try
+            {
+                return Ok(repository.GetAllRestaurants());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -36,16 +44,24 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [Authorize]
         public ActionResult<RestaurantDTO> Create(RestaurantDTO restaurantDTO)
         {
-            if (restaurantDTO == null)
+            try
             {
-                return BadRequest("Empty object.");
+                if (restaurantDTO == null)
+                {
+                    return BadRequest("Empty object.");
+                }
+
+                restaurantDTO.Id = Guid.NewGuid();
+                var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
+                repository.Add(restaurant);
+
+                return CreatedAtAction(nameof(Create), restaurant);
             }
-
-            restaurantDTO.Id = Guid.NewGuid();
-            var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
-            repository.Add(restaurant);
-
-            return CreatedAtAction(nameof(Create), restaurant);
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -53,18 +69,19 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [Authorize]
         public ActionResult<RestaurantDTO> Update(RestaurantDTO restaurantDTO)
         {
-            var restaurant = repository.GetById(restaurantDTO.Id);
-
-            if (restaurant == null)
+            try
             {
-                return NotFound();
+                var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
+
+                repository.Update(restaurant);
+
+                return NoContent();
             }
-
-            AutoMappers.Mapper.Map(restaurantDTO, restaurant);
-
-            repository.Update(restaurant);
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -72,18 +89,24 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [Authorize]
         public ActionResult<RestaurantDTO> Delete(RestaurantDTO restaurantDTO)
         {
-            var restaurant = repository.GetById(restaurantDTO.Id);
-
-            if (restaurant == null)
+            try
             {
-                return NotFound();
+                var restaurant = repository.GetById(restaurantDTO.Id);
+
+                if (restaurant == null)
+                {
+                    return NotFound();
+                }
+
+                repository.Remove(restaurant);
+
+                return NoContent();
             }
-
-            AutoMappers.Mapper.Map(restaurantDTO, restaurant);
-
-            repository.Remove(restaurant);
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -91,7 +114,15 @@ namespace PartiuAlmoco.Web.Api.Controllers
         [Authorize]
         public ActionResult<RestaurantDTO> GetById(Guid id)
         {
-            return Ok(repository.GetById(id));
+            try
+            {
+                return Ok(repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

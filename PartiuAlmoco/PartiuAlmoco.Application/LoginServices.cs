@@ -23,7 +23,7 @@ namespace PartiuAlmoco.Application
 
             if (user == null)
             {
-                throw new ApplicationException($"User with e-mail '{email}' do not exists.");
+                return null;
             }
 
             var passwordHashBase64 = userRepository.RetrieveUserPasswordHashBase64(user.Id);
