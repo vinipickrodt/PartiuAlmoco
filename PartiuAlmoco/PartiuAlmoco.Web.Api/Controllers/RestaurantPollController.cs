@@ -35,7 +35,6 @@ namespace PartiuAlmoco.Web.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         [Route(nameof(GetRestaurantsValidForPoll))]
         public ActionResult<IEnumerable<Restaurant>> GetRestaurantsValidForPoll()
         {

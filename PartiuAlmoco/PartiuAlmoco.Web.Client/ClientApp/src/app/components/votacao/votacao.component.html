@@ -6,7 +6,7 @@
     <p *ngIf="getVotedRestaurant()"><b>Partiu {{getVotedRestaurant().name}}!</b></p>
   </div>
   <div *ngIf="!isAuthenticated">
-    <a [routerLink]="['/entrar']">Faça login</a> para pode votar no seu restaurante preferido!
+    <a [routerLink]="['/entrar']">Faça login</a> para poder votar no seu restaurante preferido!
   </div>
 
   <div class="row" *ngFor="let restaurantsRow of getRestaurantRows()">
