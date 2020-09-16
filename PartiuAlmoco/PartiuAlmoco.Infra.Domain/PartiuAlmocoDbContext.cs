@@ -27,7 +27,7 @@ namespace PartiuAlmoco.Infra.Domain
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //// TODO: Descomentar a linha abaixo e o construtor sem parâmetros e rodar os comandos do migration...
+            //// TODO: Descomentar a linha abaixo e rodar os comandos do migration...
             //// dotnet ef migrations add Initial --project PartiuAlmoco.Infra.Domain
             //// dotnet ef database update --project PartiuAlmoco.Infra.Domain
             //optionsBuilder.UseSqlite(@"Data Source=c:\temp\data.sqlite");

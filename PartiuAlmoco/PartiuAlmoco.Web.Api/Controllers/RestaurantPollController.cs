@@ -60,6 +60,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 var poll = restaurantPollService.GetTodayRestaurantPoll();
                 var restaurant = restaurantRepository.GetById(restaurantId);
                 poll.AddVote(restaurant, GetCurrentUser());
+                //restaurantPollService.AddVote(restaurant, GetCurrentUser());
                 repository.Confirm(poll);
                 return Ok();
             }
@@ -109,6 +110,6 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 throw new ApplicationException("Invalid user");
             return userRepository.GetById(new Guid(id));
         }
-        
+
     }
 }

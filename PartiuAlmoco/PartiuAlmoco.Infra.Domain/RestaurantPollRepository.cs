@@ -75,9 +75,6 @@ namespace PartiuAlmoco.Infra.Domain
             // salva no banco de dados o(s) voto(s) adicionado(s).
             dbContext.AttachRange(poll.Votes);
 
-            // salva no banco de dados o(s) resultado(s) adicionado(s).
-            dbContext.AttachRange(poll.PollResults);
-
             dbContext.SaveChanges();
         }
 

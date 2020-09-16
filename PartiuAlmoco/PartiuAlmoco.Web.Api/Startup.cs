@@ -135,7 +135,7 @@ namespace PartiuAlmoco.Web.Api
             });
 
             // TODO: Passar para o config
-            services.AddDbContext<PartiuAlmocoDbContext>(opt => opt.UseSqlite(@"Data Source=C:\temp\data.sqlite"));
+            services.AddDbContext<PartiuAlmocoDbContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("Default")));
             services.AddTransient<IRestaurantPollRepository, RestaurantPollRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
