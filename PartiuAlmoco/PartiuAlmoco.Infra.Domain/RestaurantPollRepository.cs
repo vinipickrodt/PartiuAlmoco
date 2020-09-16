@@ -75,6 +75,7 @@ namespace PartiuAlmoco.Infra.Domain
         {
             var restaurantPoll = new RestaurantPoll(Guid.NewGuid(), name, date, restaurantRepository.GetAllRestaurants(), null);
             dbContext.RestaurantPolls.Add(restaurantPoll);
+            dbContext.SaveChanges();
             return restaurantPoll;
         }
 

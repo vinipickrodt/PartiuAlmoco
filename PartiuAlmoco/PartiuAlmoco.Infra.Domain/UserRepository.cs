@@ -47,16 +47,6 @@ namespace PartiuAlmoco.Infra.Domain
             return newUser;
         }
 
-        public void UpdateName(Guid userId, string fullName, string friendlyName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ChangeEmail(string newEmail)
-        {
-            throw new NotImplementedException();
-        }
-
         public string RetrieveUserPasswordHashBase64(Guid userId)
         {
             Guard.Against.NullOrEmpty(userId, nameof(userId));
@@ -66,7 +56,7 @@ namespace PartiuAlmoco.Infra.Domain
         public User GetUserByEmail(string email)
         {
             Guard.Against.InvalidEmail(email, nameof(email));
-            return dbContext.Users.First(u => u.Email == email);
+            return dbContext.Users.FirstOrDefault(u => u.Email == email);
         }
     }
 }

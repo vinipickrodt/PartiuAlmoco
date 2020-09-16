@@ -32,7 +32,7 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         /// Busca todos os restaurantes válidos para esta votação.
         /// </summary>
         /// <returns>Retorna os restaurantes válidos para receberem votos.</returns>
-        public IEnumerable<Restaurant> GetRestaurantsValidForPoll()
+        public IEnumerable<Restaurant> GetValidRestaurantsForPoll()
         {
             return this.AllRestaurants.Where(restaurant => !DidRestaurantWonThisWeek(restaurant));
         }
