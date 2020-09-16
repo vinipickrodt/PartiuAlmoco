@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PartiuAlmoco.Core.Domain.Entities;
 using PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate;
 using PartiuAlmoco.Core.Domain.Interfaces;
+using PartiuAlmoco.Web.Api.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +22,16 @@ namespace PartiuAlmoco.Web.Api.Controllers
         private readonly IRestaurantPollService restaurantPollService;
         private readonly IUserRepository userRepository;
         private readonly ILogger<RestaurantPollController> logger;
+        private readonly IMapper mapper;
 
-        public RestaurantPollController(IRestaurantPollRepository repository, IRestaurantRepository restaurantRepository, IRestaurantPollService restaurantPollService, IUserRepository userRepository, ILogger<RestaurantPollController> logger)
+        public RestaurantPollController(IRestaurantPollRepository repository, IRestaurantRepository restaurantRepository, IRestaurantPollService restaurantPollService, IUserRepository userRepository, ILogger<RestaurantPollController> logger, IMapper mapper)
         {
             this.repository = repository;
             this.restaurantRepository = restaurantRepository;
             this.restaurantPollService = restaurantPollService;
             this.userRepository = userRepository;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -36,12 +40,16 @@ namespace PartiuAlmoco.Web.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route(nameof(GetRestaurantsValidForPoll))]
-        public ActionResult<IEnumerable<Restaurant>> GetRestaurantsValidForPoll()
+        public ActionResult<IEnumerable<RestaurantDTO>> GetRestaurantsValidForPoll()
         {
             try
             {
                 RestaurantPoll poll = restaurantPollService.GetTodayRestaurantPoll();
-                return Ok(poll.GetValidRestaurantsForPoll());
+                
+                var validRestaurants = poll.GetValidRestaurantsForPoll()
+                    .Select(restaurant => mapper.Map<RestaurantDTO>(restaurant));
+
+                return Ok(validRestaurants);
             }
             catch (Exception ex)
             {
@@ -110,6 +118,5 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 throw new ApplicationException("Invalid user");
             return userRepository.GetById(new Guid(id));
         }
-
     }
 }
