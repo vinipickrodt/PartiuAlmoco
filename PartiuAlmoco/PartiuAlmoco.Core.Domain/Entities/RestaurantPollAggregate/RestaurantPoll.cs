@@ -62,6 +62,11 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
                 throw new ApplicationException($"User {user.FullName} already voted in this poll.");
             }
 
+            if (DidRestaurantWonThisWeek(restaurant))
+            {
+                throw new ApplicationException($"Restaurant {restaurant.Name} already won this week.");
+            }
+
             _votes.Add(new RestaurantPollVote(this, user, restaurant, Date));
         }
 
@@ -80,7 +85,7 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
             Guard.Against.Null(restaurant, nameof(restaurant));
 
             var restaurantLastVictory = _pollResults.FirstOrDefault(result => result.WinnerRestaurant.Id == restaurant.Id);
-            return (restaurantLastVictory != null && restaurantLastVictory.Date.WeekOfYear() >= DateTime.Now.WeekOfYear());
+            return (restaurantLastVictory != null && restaurantLastVictory.Date.WeekOfYear() >= Date.WeekOfYear());
         }
 
         public void SetPollResults(IEnumerable<RestaurantPollResult> pollResults)
