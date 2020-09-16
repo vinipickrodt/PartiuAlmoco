@@ -135,7 +135,10 @@ namespace PartiuAlmoco.Web.Api
             });
 
             // TODO: Passar para o config
-            services.AddDbContext<PartiuAlmocoDbContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<PartiuAlmocoDbContext>(opt =>
+            {
+                opt.UseSqlite(Configuration.GetConnectionString("Default"));
+            });
             services.AddTransient<IRestaurantPollRepository, RestaurantPollRepository>();
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -149,6 +152,12 @@ namespace PartiuAlmoco.Web.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<PartiuAlmocoDbContext>();
+                context.Database.Migrate();
             }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
