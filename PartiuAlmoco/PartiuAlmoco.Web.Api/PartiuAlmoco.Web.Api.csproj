@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
@@ -16,6 +17,10 @@
     <ProjectReference Include="..\PartiuAlmoco.Application\PartiuAlmoco.Application.csproj" />
     <ProjectReference Include="..\PartiuAlmoco.Core.Domain\PartiuAlmoco.Core.Domain.csproj" />
     <ProjectReference Include="..\PartiuAlmoco.Infra.Domain\PartiuAlmoco.Infra.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 

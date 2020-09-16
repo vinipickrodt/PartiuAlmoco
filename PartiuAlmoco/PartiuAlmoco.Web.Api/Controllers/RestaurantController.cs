@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,11 +19,13 @@ namespace PartiuAlmoco.Web.Api.Controllers
     {
         private readonly IRestaurantRepository repository;
         private readonly ILogger<RestaurantController> logger;
+        private readonly IMapper mapper;
 
-        public RestaurantController(IRestaurantRepository repository, ILogger<RestaurantController> logger)
+        public RestaurantController(IRestaurantRepository repository, ILogger<RestaurantController> logger, IMapper mapper)
         {
             this.repository = repository;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -52,7 +55,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 }
 
                 restaurantDTO.Id = Guid.NewGuid();
-                var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
+                var restaurant = mapper.Map<Restaurant>(restaurantDTO);
                 repository.Add(restaurant);
 
                 return CreatedAtAction(nameof(Create), restaurant);
@@ -71,7 +74,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         {
             try
             {
-                var restaurant = AutoMappers.Mapper.Map<Restaurant>(restaurantDTO);
+                var restaurant = mapper.Map<Restaurant>(restaurantDTO);
 
                 repository.Update(restaurant);
 

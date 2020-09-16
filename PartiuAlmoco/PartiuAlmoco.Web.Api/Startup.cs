@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -97,6 +98,8 @@ namespace PartiuAlmoco.Web.Api
                     };
                 });
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -136,7 +139,6 @@ namespace PartiuAlmoco.Web.Api
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ILoginServices, LoginServices>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
