@@ -30,7 +30,7 @@ export class VotacaoComponent implements OnInit {
   ranking: Ranking[] = [];
 
   refresh() {
-    this.api.getRestaurants().subscribe(result => this.restaurants = result);
+    this.api.getRestaurantsValidForPoll().subscribe(result => this.restaurants = result);
     this.api.getRanking().subscribe(ranking => this.ranking = ranking);
     if (this.isAuthenticated) {
       this.api.getMyVote().subscribe(vote => this.votedRestaurantId = vote);

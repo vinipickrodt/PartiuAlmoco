@@ -20,7 +20,7 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
 
             // must fail
             Assert.ThrowsAny<ArgumentException>(new Action(() =>
-                new RestaurantPoll(Guid.Empty, "Nome", DateTime.Now, restaurants, null)));
+                new RestaurantPoll(Guid.Empty, "Nome", DateTime.Now, restaurants)));
         }
 
         [Fact]
@@ -32,16 +32,16 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
             restaurants.Add(new Restaurant(validGuid, "Pizza Hut", "http://www.pizzahut.com", ""));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, null, DateTime.Now, restaurants, null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, null, DateTime.Now, restaurants)));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "", DateTime.Now, restaurants, null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "", DateTime.Now, restaurants)));
 
             // must fail
-            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "     ", DateTime.Now, restaurants, null)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPoll(validGuid, "     ", DateTime.Now, restaurants)));
 
             // must pass
-            new RestaurantPoll(validGuid, "Almoço", DateTime.Now, restaurants, null);
+            new RestaurantPoll(validGuid, "Almoço", DateTime.Now, restaurants);
         }
     }
 }

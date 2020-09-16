@@ -49,6 +49,17 @@ export class ApiService {
     return this.http.get<Restaurant[]>("http://localhost:53233/api/Restaurant");
   }
 
+  getRestaurantsValidForPoll(): Observable<Restaurant[]> {
+    return this.authentication.getCurrentUser()
+      .pipe(flatMap((user) => {
+        if (!user) throw new Error("Not Authenticated."); return this.http.get<Restaurant[]>("http://localhost:53233/api/RestaurantPoll/GetRestaurantsValidForPoll", {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        });
+      }));
+  }
+
   getRestaurantById(id: string): Observable<Restaurant> {
     return this.authentication.getCurrentUser()
       .pipe(flatMap((user) => {

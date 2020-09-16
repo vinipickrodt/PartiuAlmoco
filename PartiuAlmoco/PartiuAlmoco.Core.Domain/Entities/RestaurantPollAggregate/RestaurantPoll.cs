@@ -87,11 +87,6 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
         {
             Guard.Against.Null(pollResults, nameof(pollResults));
 
-            if (pollResults.Any(result => result.RestaurantPoll.Id != this.Id))
-            {
-                throw new InvalidOperationException("poll results do not match with this pollId.");
-            }
-
             if (pollResults.Any(result => result.Date.Date > this.Date.Date))
             {
                 throw new InvalidOperationException("poll result cannot have a date greater than this poll date.");
@@ -109,12 +104,17 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
                 throw new InvalidOperationException("votes do not match with this pollId.");
             }
 
-            if (_votes.Any(v => v.Date.Date != this.Date.Date))
-            {
-                throw new InvalidOperationException("votes do not match dates with this poll date.");
-            }
+            //if (_votes.Any(v => v.Date.Date != this.Date.Date))
+            //{
+            //    throw new InvalidOperationException("votes do not match dates with this poll date.");
+            //}
 
             _votes = votes.ToList();
+        }
+
+        public void SetRestaurants(IEnumerable<Restaurant> restaurants)
+        {
+            _allRestaurants = restaurants.ToList();
         }
 
         // TODO: Validar se não é melhor colocar este método no Application Service...
@@ -128,27 +128,48 @@ namespace PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate
                 .OrderByDescending(it => it.Votes);
         }
 
+        public RestaurantPollResult GetResult()
+        {
+            if (this.Votes.Count() > 0)
+            {
+                var mostVoted = this.Votes
+                    .GroupBy(v => v.Restaurant.Id)
+                    .OrderByDescending(g => g.Count())
+                    .First();
+                var mostVotedRestaurant = mostVoted.First().Restaurant;
+                var votesReceived = mostVoted.Count();
+
+                this.WinnerRestaurant = mostVotedRestaurant;
+
+                var result = new RestaurantPollResult(Guid.NewGuid(), this, Date.Date, mostVotedRestaurant, votesReceived);
+                _pollResults.Add(result);
+
+                return result;
+            }
+
+            return null;
+        }
+
         #region Constructor
 
         public RestaurantPoll(Guid id,
             string name,
             DateTime date,
-            IEnumerable<Restaurant> restaurants,
-            Restaurant winnerRestaurant)
+            IEnumerable<Restaurant> restaurants)
         {
             Guard.Against.NullOrEmpty(id, nameof(id));
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             if (date <= DateTime.MinValue) throw new ArgumentNullException(nameof(date));
             Guard.Against.NullOrEmpty(restaurants, nameof(restaurants));
 
-            if (winnerRestaurant != null && !restaurants.Contains(winnerRestaurant))
-                throw new InvalidOperationException($"Restaurant '{winnerRestaurant.Name}' is not in the list of participating restaurants.");
+            //if (winnerRestaurant != null && !restaurants.Contains(winnerRestaurant))
+            //    throw new InvalidOperationException($"Restaurant '{winnerRestaurant.Name}' is not in the list of participating restaurants.");
 
             Id = id;
             Name = name;
             Date = date;
             _allRestaurants = restaurants.ToList();
-            WinnerRestaurant = winnerRestaurant;
+            //WinnerRestaurant = winnerRestaurant;
         }
 
         // Entity Framework

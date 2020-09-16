@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PartiuAlmoco.Core.Domain.Entities.RestaurantPollAggregate;
 using PartiuAlmoco.Core.Domain.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PartiuAlmoco.Infra.Domain
@@ -37,9 +38,16 @@ namespace PartiuAlmoco.Infra.Domain
                 return null;
             }
 
+            LoadPoll(poll);
+
+            return poll;
+        }
+
+        private RestaurantPoll LoadPoll(RestaurantPoll poll)
+        {
             // busca os ultimos 100 resultados das votações passadas.
             var pollResults = dbContext.PollResults
-                .Where(pr => pr.RestaurantPoll.Id == poll.Id && pr.Date.Date <= date.Date)
+                .Where(pr => pr.Date.Date <= poll.Date.Date)
                 .OrderByDescending(pr => pr.Date)
                 .Include(v => v.WinnerRestaurant)
                 .Include(v => v.RestaurantPoll)
@@ -54,6 +62,8 @@ namespace PartiuAlmoco.Infra.Domain
                 .Include(v => v.RestaurantPoll)
                 .Take(5000).ToList();
             poll.SetVotes(votes);
+
+            poll.SetRestaurants(dbContext.Restaurants.ToList());
 
             return poll;
         }
@@ -73,7 +83,7 @@ namespace PartiuAlmoco.Infra.Domain
 
         public RestaurantPoll NewPoll(string name, DateTime date)
         {
-            var restaurantPoll = new RestaurantPoll(Guid.NewGuid(), name, date, restaurantRepository.GetAllRestaurants(), null);
+            var restaurantPoll = new RestaurantPoll(Guid.NewGuid(), name, date, restaurantRepository.GetAllRestaurants());
             dbContext.RestaurantPolls.Add(restaurantPoll);
             dbContext.SaveChanges();
             return restaurantPoll;
@@ -82,6 +92,30 @@ namespace PartiuAlmoco.Infra.Domain
         public void Add(RestaurantPoll poll)
         {
             dbContext.RestaurantPolls.Add(poll);
+            dbContext.SaveChanges();
+        }
+
+        public IEnumerable<RestaurantPoll> GetUnfinishedPolls(DateTime date)
+        {
+            return dbContext.RestaurantPolls
+                .Where(poll => poll.WinnerRestaurant == null && poll.Date < date.Date)
+                .ToList()
+                .Select(poll => LoadPoll(poll));
+        }
+
+        public RestaurantPoll GetPollById(Guid id)
+        {
+            var poll = dbContext.RestaurantPolls.Find(id);
+
+            if (poll == null)
+                return null;
+
+            return LoadPoll(poll);
+        }
+
+        public void AddPollResult(RestaurantPollResult result)
+        {
+            dbContext.PollResults.Add(result);
             dbContext.SaveChanges();
         }
     }

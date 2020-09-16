@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
 using PartiuAlmoco.Application;
 using PartiuAlmoco.Core.Domain.Interfaces;
+using PartiuAlmoco.Core.Domain.Services;
 using PartiuAlmoco.Infra.Domain;
 
 namespace PartiuAlmoco.Web.Api
@@ -139,6 +140,7 @@ namespace PartiuAlmoco.Web.Api
             services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ILoginServices, LoginServices>();
+            services.AddTransient<IRestaurantPollService, RestaurantPollService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

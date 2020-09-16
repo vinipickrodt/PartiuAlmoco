@@ -17,13 +17,15 @@ namespace PartiuAlmoco.Web.Api.Controllers
     {
         private readonly IRestaurantPollRepository repository;
         private readonly IRestaurantRepository restaurantRepository;
+        private readonly IRestaurantPollService restaurantPollService;
         private readonly IUserRepository userRepository;
         private readonly ILogger<RestaurantPollController> logger;
 
-        public RestaurantPollController(IRestaurantPollRepository repository, IRestaurantRepository restaurantRepository, IUserRepository userRepository, ILogger<RestaurantPollController> logger)
+        public RestaurantPollController(IRestaurantPollRepository repository, IRestaurantRepository restaurantRepository, IRestaurantPollService restaurantPollService, IUserRepository userRepository, ILogger<RestaurantPollController> logger)
         {
             this.repository = repository;
             this.restaurantRepository = restaurantRepository;
+            this.restaurantPollService = restaurantPollService;
             this.userRepository = userRepository;
             this.logger = logger;
         }
@@ -39,7 +41,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         {
             try
             {
-                RestaurantPoll poll = GetDefaultPoll();
+                RestaurantPoll poll = restaurantPollService.GetTodayRestaurantPoll();
                 return Ok(poll.GetValidRestaurantsForPoll());
             }
             catch (Exception ex)
@@ -56,7 +58,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         {
             try
             {
-                var poll = GetDefaultPoll();
+                var poll = restaurantPollService.GetTodayRestaurantPoll();
                 var restaurant = restaurantRepository.GetById(restaurantId);
                 poll.AddVote(restaurant, GetCurrentUser());
                 repository.Confirm(poll);
@@ -76,7 +78,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         {
             try
             {
-                var vote = GetDefaultPoll().GetUserVote(GetCurrentUser())?.Restaurant?.Id;
+                var vote = restaurantPollService.GetTodayRestaurantPoll().GetUserVote(GetCurrentUser())?.Restaurant?.Id;
                 return Ok(vote.HasValue ? (object)vote.Value : null);
             }
             catch (Exception ex)
@@ -92,7 +94,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         {
             try
             {
-                return Ok(GetDefaultPoll().GetRanking());
+                return Ok(restaurantPollService.GetTodayRestaurantPoll().GetRanking());
             }
             catch (Exception ex)
             {
@@ -108,17 +110,6 @@ namespace PartiuAlmoco.Web.Api.Controllers
                 throw new ApplicationException("Invalid user");
             return userRepository.GetById(new Guid(id));
         }
-
-        private RestaurantPoll GetDefaultPoll()
-        {
-            var poll = repository.GetPollByDate(DateTime.Now);
-
-            if (poll == null)
-            {
-                poll = repository.NewPoll("Almoço", DateTime.Now);
-            }
-
-            return poll;
-        }
+        
     }
 }

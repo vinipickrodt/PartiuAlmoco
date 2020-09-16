@@ -9,6 +9,8 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
 {
     public interface IRestaurantPollRepository
     {
+        RestaurantPoll GetPollById(Guid id);
+
         /// <summary>
         /// Busca a votação por data. Incluindo todos os votos e os ultimos 100 resultados das ultimas votações.
         /// </summary>
@@ -31,5 +33,18 @@ namespace PartiuAlmoco.Core.Domain.Interfaces
         void Confirm(RestaurantPoll poll);
 
         void Add(RestaurantPoll poll);
+
+        /// <summary>
+        /// Busca as votações que não tiverem seus resultados computados até a data.
+        /// </summary>
+        /// <param name="date">Data</param>
+        /// <returns>Retorna todas as votações que não tiveram seus resultados computados até a data.</returns>
+        IEnumerable<RestaurantPoll> GetUnfinishedPolls(DateTime date);
+
+        /// <summary>
+        /// Adiciona o resultado da votação.
+        /// </summary>
+        /// <param name="result">resultado da votação</param>
+        void AddPollResult(RestaurantPollResult result);
     }
 }
