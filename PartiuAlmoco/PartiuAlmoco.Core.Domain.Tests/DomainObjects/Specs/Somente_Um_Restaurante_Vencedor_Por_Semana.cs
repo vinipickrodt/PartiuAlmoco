@@ -18,11 +18,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Specs
         [Trait("Category", "Specification")]
         public void Specification_Somente_Um_Restaurante_Vencedor_Por_Semana()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             var poll = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 9, 13), new List<Restaurant>() { restaurant1, restaurant2 });
             var pollResults = new List<RestaurantPollResult>()
             {
@@ -30,7 +30,7 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Specs
             };
             poll.SetPollResults(pollResults);
 
-            var user = Artifacts.GetUser();
+            var user = TestArtifacts.GetUser();
 
             poll.AddVote(restaurant1, user);
             Assert.Single(poll.Votes);
@@ -46,11 +46,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Specs
         [Trait("Category", "Specification")]
         public void Specification_Listagem_Somente_Restaurantes_Que_Nao_Venceram_Na_Semana()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             var poll1 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 9, 19), new List<Restaurant>() { restaurant1, restaurant2 });
             var pollResults = new List<RestaurantPollResult>()
             {
@@ -75,11 +75,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Specs
         [Trait("Category", "Regressão")]
         public void Mesmo_Se_A_Votacao_Anterior_Nao_Tiver_Sido_Finalizada()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             var poll_Dia1 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 1, 10), new List<Restaurant>() { restaurant1, restaurant2 });
 
             poll_Dia1.AddVote(restaurant1, mockedUsers[0].Object);

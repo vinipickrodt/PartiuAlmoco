@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PartiuAlmoco.Core.Domain.Tests
 {
-    public class Artifacts
+    public class TestArtifacts
     {
         public static Restaurant GetRestaurant1() => new Restaurant(new Guid("{96E3D259-34E4-4ACC-9C1F-AA47EEB1CB93}"), "Mamma Mia", "http://www.galetomammamia.com.br/", "");
         public static Restaurant GetRestaurant2() => new Restaurant(new Guid("{41055914-E9E6-4308-AF9A-843A65E02CFD}"), "Pizza Hut", "http://www.pizzahut.com.br", "");

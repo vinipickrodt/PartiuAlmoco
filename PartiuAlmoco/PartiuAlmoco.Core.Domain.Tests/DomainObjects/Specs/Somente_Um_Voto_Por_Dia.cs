@@ -13,12 +13,12 @@ namespace PartiuAlmoco.Core.Domain.Tests
         [Fact]
         public void Specification_Somente_Um_Voto_Por_Dia()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurantPoll = Artifacts.GetRestaurantPoll();
-            var restaurant = Artifacts.GetRestaurant1();
-            var user = Artifacts.GetUser();
+            var restaurantPoll = TestArtifacts.GetRestaurantPoll();
+            var restaurant = TestArtifacts.GetRestaurant1();
+            var user = TestArtifacts.GetUser();
 
             restaurantPoll.AddVote(restaurant, user);
             Assert.Single(restaurantPoll.Votes);

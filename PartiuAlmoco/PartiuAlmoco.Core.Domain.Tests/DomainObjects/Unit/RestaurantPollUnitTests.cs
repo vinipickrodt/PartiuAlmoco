@@ -16,11 +16,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Unit
         [Fact]
         public void Verifica_Resultado_Da_Votacao()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             var poll_Dia1 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 1, 10), new List<Restaurant>() { restaurant1, restaurant2 });
 
             poll_Dia1.AddVote(restaurant1, mockedUsers[0].Object);
@@ -43,11 +43,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Unit
         [Fact]
         public void Finaliza_As_Votacoes_Anteriores_Caso_Nao_Tiverem_Sido_Finalizadas()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             
             var dia1 = new DateTime(2020, 1, 10);
             var dia2 = new DateTime(2020, 1, 11);
@@ -74,11 +74,11 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Unit
         [Fact]
         public void Verifica_Ranking()
         {
-            List<Mock<User>> mockedUsers = Artifacts.GetMockedUsers();
-            List<Mock<Restaurant>> mockedRestaurants = Artifacts.GetMockedRestaurants();
+            List<Mock<User>> mockedUsers = TestArtifacts.GetMockedUsers();
+            List<Mock<Restaurant>> mockedRestaurants = TestArtifacts.GetMockedRestaurants();
 
-            var restaurant1 = Artifacts.GetRestaurant1();
-            var restaurant2 = Artifacts.GetRestaurant2();
+            var restaurant1 = TestArtifacts.GetRestaurant1();
+            var restaurant2 = TestArtifacts.GetRestaurant2();
             var poll_Dia1 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 1, 10), new List<Restaurant>() { restaurant1, restaurant2 });
 
             poll_Dia1.AddVote(restaurant1, mockedUsers[0].Object);

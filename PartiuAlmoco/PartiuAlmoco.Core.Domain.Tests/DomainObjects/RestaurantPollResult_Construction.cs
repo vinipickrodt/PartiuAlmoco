@@ -16,14 +16,14 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         public void RestaurantPollResult_Pass_Valid_Id(string guidStr)
         {
             var validGuid = new Guid(guidStr);
-            new RestaurantPollResult(validGuid, Artifacts.GetRestaurantPoll(), DateTime.Now, Artifacts.GetRestaurant1(), 42);
+            new RestaurantPollResult(validGuid, TestArtifacts.GetRestaurantPoll(), DateTime.Now, TestArtifacts.GetRestaurant1(), 42);
         }
 
         [Theory]
         [InlineData("{00000000-0000-0000-0000-000000000000}")]
         public void RestaurantPollResult_Fails_Invalid_Id(string guidStr)
         {
-            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(new Guid(guidStr), Artifacts.GetRestaurantPoll(), DateTime.Now, Artifacts.GetRestaurant1(), 42)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(new Guid(guidStr), TestArtifacts.GetRestaurantPoll(), DateTime.Now, TestArtifacts.GetRestaurant1(), 42)));
         }
 
         [Theory]
@@ -33,7 +33,7 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         [InlineData(-9999999)]
         public void RestaurantPollResult_Fails_Invalid_Votes(int votes)
         {
-            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(Guid.NewGuid(), Artifacts.GetRestaurantPoll(), DateTime.Now, Artifacts.GetRestaurant1(), votes)));
+            Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(Guid.NewGuid(), TestArtifacts.GetRestaurantPoll(), DateTime.Now, TestArtifacts.GetRestaurant1(), votes)));
         }
 
         [Theory]
@@ -43,15 +43,15 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         [InlineData(9999999)]
         public void RestaurantPollResult_Pass_Valid_Votes(int votes)
         {
-            new RestaurantPollResult(Guid.NewGuid(), Artifacts.GetRestaurantPoll(), DateTime.Now, Artifacts.GetRestaurant1(), votes);
+            new RestaurantPollResult(Guid.NewGuid(), TestArtifacts.GetRestaurantPoll(), DateTime.Now, TestArtifacts.GetRestaurant1(), votes);
         }
 
         [Fact]
         public void RestaurantPollResult_Has_Valid_Winner()
         {
             var validGuid = Guid.NewGuid();
-            var restaurant = Artifacts.GetRestaurant1();
-            var restaurantPoll = Artifacts.GetRestaurantPoll();
+            var restaurant = TestArtifacts.GetRestaurant1();
+            var restaurantPoll = TestArtifacts.GetRestaurantPoll();
 
             // must fail
             Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(validGuid, restaurantPoll, DateTime.Now, null, 42)));
@@ -65,8 +65,8 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         public void RestaurantPollResult_Pass_Valid_Date(int dia, int mes, int ano)
         {
             var validGuid = Guid.NewGuid();
-            var restaurant = Artifacts.GetRestaurant1();
-            var restaurantPoll = Artifacts.GetRestaurantPoll();
+            var restaurant = TestArtifacts.GetRestaurant1();
+            var restaurantPoll = TestArtifacts.GetRestaurantPoll();
 
             new RestaurantPollResult(validGuid, restaurantPoll, new DateTime(ano, mes, dia), restaurant, 42);
         }
@@ -75,8 +75,8 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         public void RestaurantPollResult_Fails_Invalid_Date()
         {
             var validGuid = Guid.NewGuid();
-            var restaurant = Artifacts.GetRestaurant1();
-            var restaurantPoll = Artifacts.GetRestaurantPoll();
+            var restaurant = TestArtifacts.GetRestaurant1();
+            var restaurantPoll = TestArtifacts.GetRestaurantPoll();
 
             Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(validGuid, restaurantPoll, default, restaurant, 42)));
         }
@@ -85,8 +85,8 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects
         public void RestaurantPollResult_Has_Valid_RestaurantPoll()
         {
             var validGuid = Guid.NewGuid();
-            var restaurant = Artifacts.GetRestaurant1();
-            var restaurantPoll = Artifacts.GetRestaurantPoll();
+            var restaurant = TestArtifacts.GetRestaurant1();
+            var restaurantPoll = TestArtifacts.GetRestaurantPoll();
 
             // must fail
             Assert.ThrowsAny<ArgumentException>(new Action(() => new RestaurantPollResult(validGuid, null, DateTime.Now, restaurant, 42)));
