@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  partiualmoco.web.api:
+    image: webapi
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: pa-webapi.dockerfile
+
+  partiualmoco.web.client:
+    image: webclient
+    ports:
+      - "80:80"
+    build:
+      context: PartiuAlmoco.Web.Client
+      dockerfile: ../pa-webclient.dockerfile

@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
 using PartiuAlmoco.Application;
+using PartiuAlmoco.Core.Domain.Entities;
 using PartiuAlmoco.Core.Domain.Interfaces;
 using PartiuAlmoco.Core.Domain.Services;
 using PartiuAlmoco.Infra.Domain;
@@ -171,6 +172,18 @@ namespace PartiuAlmoco.Web.Api
             {
                 endpoints.MapControllers();
             });
+
+            MigrateDb(app.ApplicationServices.CreateScope());
+        }
+
+        private static void MigrateDb(IServiceScope serviceScope)
+        {
+            var serviceProvider = serviceScope.ServiceProvider;
+
+            using (var ctx = serviceProvider.GetService<PartiuAlmocoDbContext>())
+            {
+                ctx.Database.Migrate();
+            }
         }
     }
 }

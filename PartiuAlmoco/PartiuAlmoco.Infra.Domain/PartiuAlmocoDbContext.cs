@@ -13,7 +13,6 @@ namespace PartiuAlmoco.Infra.Domain
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserPassword> UserPasswords { get; set; }
-        public IAppSettings Settings { get; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

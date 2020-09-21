@@ -14,7 +14,6 @@ namespace PartiuAlmoco.ConsoleApp
             var serviceProvider = new ServiceCollection()
                 .AddDbContext<PartiuAlmocoDbContext>()
                 .AddTransient<IRestaurantPollRepository, RestaurantPollRepository>()
-                .AddTransient<IAppSettings, AppSettings>()
                 .BuildServiceProvider();
 
             var repo = (RestaurantPollRepository)serviceProvider.GetService<IRestaurantPollRepository>();

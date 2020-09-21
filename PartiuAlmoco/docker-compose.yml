@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  partiualmoco.web.api:
+    image: ${DOCKER_REGISTRY-}partiualmocowebapi
+    build:
+      context: .
+      dockerfile: PartiuAlmoco.Web.Api/Dockerfile
+
+  partiualmoco.web.client:
+    image: ${DOCKER_REGISTRY-}partiualmocowebclient
+    build:
+      context: .
+      dockerfile: PartiuAlmoco.Web.Client/Dockerfile
+

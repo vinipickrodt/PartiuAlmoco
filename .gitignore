@@ -360,3 +360,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PartiuAlmoco/PartiuAlmoco.Web.Api/data.sqlite
+/PartiuAlmoco/utils

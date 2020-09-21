@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Microsoft.Extensions.Logging;
 using PartiuAlmoco.Core.Domain.Entities;
 using PartiuAlmoco.Core.Domain.Interfaces;
 using System;
@@ -12,12 +13,14 @@ namespace PartiuAlmoco.Infra.Domain
     public class UserRepository : IUserRepository
     {
         public PartiuAlmocoDbContext dbContext = null;
+        private readonly ILogger<UserRepository> logger;
 
-        public UserRepository(PartiuAlmocoDbContext dbContext)
+        public UserRepository(PartiuAlmocoDbContext dbContext, ILogger<UserRepository> logger)
         {
             Guard.Against.Null(dbContext, nameof(dbContext));
 
             this.dbContext = dbContext;
+            this.logger = logger;
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -49,8 +52,17 @@ namespace PartiuAlmoco.Infra.Domain
 
         public string RetrieveUserPasswordHashBase64(Guid userId)
         {
-            Guard.Against.NullOrEmpty(userId, nameof(userId));
-            return dbContext.UserPasswords.First(up => up.User.Id == userId).PasswordHashBase64;
+            try
+            {
+                Guard.Against.NullOrEmpty(userId, nameof(userId));
+                return dbContext.UserPasswords.First(up => up.User.Id == userId).PasswordHashBase64;
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"User '${userId}' do not have a configured password.");
+                throw new ApplicationException($"User '${userId}' do not have a configured password.", ex);
+            }
         }
 
         public User GetUserByEmail(string email)
