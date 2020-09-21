@@ -7,6 +7,7 @@ a.navbar-brand {
 html {
   font-size: 14px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -15,4 +16,12 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.main-title {
+  background-image: url('../../../../wwwroot/icone.webp');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 32px;
+  padding-left: 36px;
 }
