@@ -29,7 +29,7 @@ namespace PartiuAlmoco.Web.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Restaurant>> Get()
+        public ActionResult<IEnumerable<RestaurantDTO>> Get()
         {
             try
             {

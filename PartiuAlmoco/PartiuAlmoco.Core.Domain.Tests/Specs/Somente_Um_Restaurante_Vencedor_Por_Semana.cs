@@ -30,15 +30,16 @@ namespace PartiuAlmoco.Core.Domain.Tests.DomainObjects.Specs
             };
             poll.SetPollResults(pollResults);
 
-            var user = TestArtifacts.GetUser();
+            var user1 = mockedUsers[0].Object;
+            var user2 = mockedUsers[1].Object;
 
-            poll.AddVote(restaurant1, user);
+            poll.AddVote(restaurant1, user1);
             Assert.Single(poll.Votes);
 
             var poll2 = new RestaurantPoll(new Guid("{D6F9DD48-8F80-4B71-8D34-937526BAC306}"), "Almoço", new DateTime(2020, 9, 12), new List<Restaurant>() { restaurant1, restaurant2 });
             poll2.SetPollResults(pollResults);
 
-            Assert.ThrowsAny<Exception>(() => poll.AddVote(restaurant1, user));
+            Assert.ThrowsAny<Exception>(() => poll2.AddVote(restaurant1, user2));
             Assert.Empty(poll2.Votes);
         }
 
